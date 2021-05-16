@@ -1,3 +1,5 @@
+from character import Character
+
 class Player(Character):
 
   def __init__(self, is_first, playerName, character_name, home):

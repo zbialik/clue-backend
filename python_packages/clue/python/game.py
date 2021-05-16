@@ -1,8 +1,8 @@
-import player
-import character
-import clue_constants
+from player import Player
+import clue_constants as clue
+from clue_maps import *
 
-class Game(ClueConstants):
+class Game():
 
   def __init__(self, game_id):
         self.active = False
@@ -10,4 +10,4 @@ class Game(ClueConstants):
         self.myster_cards = []
         self.suggestion_cards = []
         self.event_message = ""
-        self.character_map = {}
+        self.character_map = init_character_map()
