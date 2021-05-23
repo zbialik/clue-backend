@@ -13,9 +13,9 @@ provider "aws" {
   region  = "us-east-1" 
 }
 
-resource "aws_lambda_function" "create_game_template" {
+resource "aws_lambda_function" "create_game" {
   filename      = "src/lambda/functions/create-game/lambda_function.zip"
-  function_name = "delete-game"
+  function_name = "create-game"
   role          = "arn:aws:iam::228573559958:role/service-role/ClueLamdaBaseRole"
   handler       = "lambda_function.lambda_handler"
   layers = [

@@ -66,22 +66,13 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
-    # - name: Configure AWS Credentials
-    #   uses: aws-actions/configure-aws-credentials@v1
-    #   with:
-    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-    #     # aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }} # if you have/need it
-    #     aws-region: us-east-1
-
-    - name: Setup AWS Credentials
-      run: |
-        # Setup the credentials in the workspace because everything in terraform is
-        # driven off profiles
-        mkdir -p .aws
-        echo "[default]" > .aws/credentials
-        echo "aws_access_key_id = ${{ secrets.AWS_ACCESS_KEY_ID }}" >> .aws/credentials
-        echo "aws_secret_access_key = ${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> .aws/credentials
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        # aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }} # if you have/need it
+        aws-region: us-east-1
 
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
@@ -91,8 +82,6 @@ jobs:
     - name: Terraform Apply
       if: github.ref == 'refs/heads/main' && github.event_name == 'push'
       run: terraform apply -auto-approve
-      env:
-        AWS_SHARED_CREDENTIALS_FILE: .aws/credentials
       
     - name: Cleanup AWS Credentials
       run: |
