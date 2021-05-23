@@ -4,7 +4,7 @@ import boto3
 import json
 from decimal import Decimal
 from dynamodb_json import json_util as dynamo_json
-# from game import Game
+from game import Game
 from uuid import uuid4
 
 def lambda_handler(event, context):
