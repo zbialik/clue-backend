@@ -14,7 +14,7 @@ provider "aws" {
 }
 
 resource "aws_lambda_function" "create_game_template" {
-  filename      = "src/create_game_template.zip"
+  filename      = "src/lambda/functions/create-game/lambda_function.zip"
   function_name = "delete-game"
   role          = "arn:aws:iam::228573559958:role/service-role/ClueLamdaBaseRole"
   handler       = "lambda_function.lambda_handler"
@@ -26,7 +26,7 @@ resource "aws_lambda_function" "create_game_template" {
   # The filebase64sha256() function is available in Terraform 0.11.12 and later
   # For Terraform 0.11.11 and earlier, use the base64sha256() function and the file() function:
   # source_code_hash = "${base64sha256(file("lambda_function_template.zip"))}"
-  source_code_hash = filebase64sha256("src/create_game_template.zip")
+  source_code_hash = filebase64sha256("src/lambda/functions/create-game/lambda_function.zip")
 
   runtime = "python3.8"
 
