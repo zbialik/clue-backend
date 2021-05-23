@@ -13,7 +13,6 @@ def lambda_handler(event, context):
     db = boto3.resource('dynamodb', region_name='us-east-1')
     table = db.Table('CLUE_GAMES')
     
-    # get next gameId code
     try:
         
         # Generate Game UUID
