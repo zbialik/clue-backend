@@ -22,6 +22,14 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
+    # Build Phase
+    - uses: papeloto/action-zip@v1
+      with:
+        files: src/lambda/functions/create-game/lambda_function.py
+        recursive: false
+        dest: src/lambda/functions/create-game/lambda_function.zip
+
+    # Deployment Phase
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
@@ -48,6 +56,7 @@ jobs:
       if: github.ref == 'refs/heads/main' && github.event_name == 'push'
       run: terraform apply -auto-approve
       
+    # Cleanup Phase
     - name: Cleanup AWS Credentials
       run: |
         rm -rf .aws
