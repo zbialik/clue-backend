@@ -2,6 +2,7 @@
 # A script for updating main.tf template with new resources
 
 # Set Constants
+WORKSPACE=$(pwd)
 TEMP_RESOURCE_FILE="temp_resource.tf"
 TEMPLATE_LAMBDA_FUNCTION="resource_lambda_function.tf"
 TEMPLATE_LAMBDA_LAYER="resource_lambda_layer.tf"
@@ -10,11 +11,11 @@ TEMPLATE_LAMBDA_LAYER="resource_lambda_layer.tf"
 cp .github/workflows/templates/main.tf main.tf
 
 # Loop Through Appending Layers
-LAYER_FOLDERS=$(ls -d src/lambda/layers/*)
+LAYER_FOLDERS=$(ls -d ${WORKSPACE}/src/lambda/layers/*)
 touch temp.txt
 for layer in $LAYER_FOLDERS; do
     # set tokens
-    LAYER_ZIP_PATH=$layer'/layer.zip'  
+    LAYER_ZIP_PATH=${WORKSPACE}/$layer'/layer.zip'  
     LAYER_NAME=${layer//*\/}
 
     echo "LAYER_ZIP_PATH: $LAYER_ZIP_PATH"
