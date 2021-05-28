@@ -1,12 +1,15 @@
 #!/bin/bash
-# A script for packaging lambda functions prior to deployment
+# A script for packaging lambda deployables prior to deployment
 
-echo Starting Zip Lambda functions
+echo "starting zip of lambda layer"
 
 # get list of layers
 LAYER_FOLDERS=$(ls -d src/lambda/layers/*)
 
-
 # zip layer payloads
-zip -r src/lambda/layers/dynamodb_json/layer src/lambda/layers/dynamodb_json/python/
+for layer in $LAYER_FOLDERS; do
+    echo "zipping layer: $layer"
+    zip -r $layer/layer $layer/python/
+done
 
+echo "zipping of lambda layers complete"
