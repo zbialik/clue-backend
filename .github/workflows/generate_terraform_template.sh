@@ -59,7 +59,7 @@ for func in $FUNCTION_FOLDERS; do
     sed -i "s/__FUNCTION_NAME__/$FUNCTION_NAME/g" $TEMP_RESOURCE_FILE
 
     # insert layer dependencies into function resource
-    sed 's/__LAYERS_ARN_LIST__/r temp.txt' $TEMP_RESOURCE_FILE
+    sed 's/__LAYERS_ARN_LIST__/r temp.txt/g' $TEMP_RESOURCE_FILE
 
     # append contents of temp file to main.tf
     cat $TEMP_RESOURCE_FILE >> main.tf
