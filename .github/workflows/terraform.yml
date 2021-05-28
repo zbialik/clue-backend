@@ -23,6 +23,11 @@ jobs:
       uses: actions/checkout@v2
 
     # Build/Zip All Lambda Deployables
+    - name: Zip Lambda Deployables
+      run: |
+        chmod +x ./zip_lambda_deployables.sh
+        /zip_lambda_deployables.sh
+    
     - uses: papeloto/action-zip@v1
       with:
         files: src/lambda/functions/create-game/lambda_function.py
