@@ -1,4 +1,4 @@
-name: 'Terraform'
+name: 'AWS Serverless App Pipeline'
 
 on:
   push:
