@@ -25,8 +25,8 @@ jobs:
     # Build/Zip All Lambda Deployables
     - name: Zip Lambda Deployables
       run: |
-        chmod +x ./zip_lambda_deployables.sh
-        ./zip_lambda_deployables.sh
+        chmod +x ${GITHUB_WORKSPACE}/.github/workflows/zip_lambda_deployables.sh
+        ${GITHUB_WORKSPACE}/.github/workflows/zip_lambda_deployables.sh
     
     - uses: papeloto/action-zip@v1
       with:
