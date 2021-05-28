@@ -1,7 +1,6 @@
 #!/bin/bash
 # A script for packaging lambda deployables prior to deployment
 
-
 # LAYER WORKFLOW
 # get list of layers
 echo "starting packaging of lambda layers"
