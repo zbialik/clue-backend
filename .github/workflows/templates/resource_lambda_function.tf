@@ -1,4 +1,4 @@
-resource "aws_lambda_function" "__FUNCTION_NAME__" {
+resource "aws_lambda_function" "create_game" {
   filename      = "__FUNCTION_ZIP_PATH__"
   function_name = "__FUNCTION_NAME__"
   role          = "arn:aws:iam::228573559958:role/service-role/ClueLamdaBaseRole"
