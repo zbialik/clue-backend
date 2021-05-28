@@ -9,6 +9,36 @@ TEMPLATE_LAMBDA_LAYER="resource_lambda_layer.tf"
 # Copy Main Template File
 cp .github/workflows/templates/main.tf main.tf
 
+# Loop Through Appending Layers
+LAYER_FOLDERS=$(ls -d src/lambda/layers/*)
+touch temp.txt
+for layer in $LAYER_FOLDERS; do
+    # set tokens
+    LAYER_ZIP_PATH=$layer'/layer.zip'  
+    LAYER_NAME=${layer//*\/}
+
+    echo "LAYER_ZIP_PATH: $LAYER_ZIP_PATH"
+    echo "LAYER_NAME: $LAYER_NAME"
+
+    # also generate dependencies to insert into functions resources later
+    line_to_add="    aws_lambda_layer_version.${LAYER_NAME}.arn,"
+    echo $line_to_add >> temp.txt
+
+    # cp template to temp file
+    cp -rf .github/workflows/templates/$TEMPLATE_LAMBDA_LAYER $TEMP_RESOURCE_FILE
+
+    # tokenize temp file
+    LAYER_ZIP_PATH_FOR_SED=$(echo $LAYER_ZIP_PATH | sed 's/\//\\\//g')
+    sed -i "s/__LAYER_ZIP_PATH__/$LAYER_ZIP_PATH_FOR_SED/g" $TEMP_RESOURCE_FILE
+    sed -i "s/__LAYER_NAME__/$LAYER_NAME/g" $TEMP_RESOURCE_FILE
+
+    # append contents of temp file to main.tf
+    cat $TEMP_RESOURCE_FILE >> main.tf
+done
+
+# remove final comma for layer dependencies
+sed -i '$s/,$//' < temp.txt
+
 # Loop Through Appending Functions
 FUNCTION_FOLDERS=$(ls -d src/lambda/functions/*)
 for func in $FUNCTION_FOLDERS; do
@@ -28,36 +58,14 @@ for func in $FUNCTION_FOLDERS; do
     sed -i "s/__FUNCTION_ZIP_PATH__/$FUNCTION_ZIP_PATH_FOR_SED/g" $TEMP_RESOURCE_FILE
     sed -i "s/__FUNCTION_NAME__/$FUNCTION_NAME/g" $TEMP_RESOURCE_FILE
 
-    # append contents of temp file to main.tf
-    cat $TEMP_RESOURCE_FILE >> main.tf
-done
-
-
-
-
-# Loop Through Appending Layers
-LAYER_FOLDERS=$(ls -d src/lambda/layers/*)
-for layer in $LAYER_FOLDERS; do
-
-    # set tokens
-    LAYER_ZIP_PATH=$layer'/layer.zip'  
-    LAYER_NAME=${layer//*\/}
-
-    echo "LAYER_ZIP_PATH: $LAYER_ZIP_PATH"
-    echo "LAYER_NAME: $LAYER_NAME"
-
-    # cp template to temp file
-    cp -rf .github/workflows/templates/$TEMPLATE_LAMBDA_LAYER $TEMP_RESOURCE_FILE
-
-    # tokenize temp file
-    LAYER_ZIP_PATH_FOR_SED=$(echo $LAYER_ZIP_PATH | sed 's/\//\\\//g')
-    sed -i "s/__LAYER_ZIP_PATH__/$LAYER_ZIP_PATH_FOR_SED/g" $TEMP_RESOURCE_FILE
-    sed -i "s/__LAYER_NAME__/$LAYER_NAME/g" $TEMP_RESOURCE_FILE
+    # insert layer dependencies into function resource
+    sed '/__LAYERS_ARN_LIST__/r temp.txt' $TEMP_RESOURCE_FILE
 
     # append contents of temp file to main.tf
     cat $TEMP_RESOURCE_FILE >> main.tf
-
 done
 
 # Cleanup
 rm -rf $TEMP_RESOURCE_FILE
+
+cat main.tf

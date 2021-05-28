@@ -4,12 +4,7 @@ resource "aws_lambda_function" "__FUNCTION_NAME__" {
   role          = "arn:aws:iam::228573559958:role/service-role/ClueLamdaBaseRole"
   handler       = "lambda_function.lambda_handler"
   layers = [
-    # "arn:aws:lambda:us-east-1:228573559958:layer:dynamodb_json:1",
-    # "arn:aws:lambda:us-east-1:228573559958:layer:clue:1"
-
-    aws_lambda_layer_version.clue.arn,
-    aws_lambda_layer_version.dynamodb_json.arn
-
+    __LAYERS_ARN_LIST__
   ]
 
   # The filebase64sha256() function is available in Terraform 0.11.12 and later
