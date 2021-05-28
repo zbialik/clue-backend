@@ -1,0 +1,24 @@
+Actions from API Gateway/Lambda:
+
+API Gateway:
+
+/games
+    - create-game X
+    /{gid}
+        - start-game (POST)
+        - get-game (GET) X
+        /players
+            - add-player (POST)
+        /actions
+            /move
+                - move-player (POST)
+            /complete-turn
+                - complete-turn (POST)
+            /suggest
+                - make-suggestion (POST)
+            /accuse
+                - make-accusation (POST)
+            /reveal-clue
+                - reveal-clue (POST)
+            /accept-clue
+                - accept-clue (POST)
