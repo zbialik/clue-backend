@@ -21,7 +21,7 @@ for func in $FUNCTION_FOLDERS; do
     echo "FUNCTION_NAME: $FUNCTION_NAME"
 
     # cp template to temp file
-    cp .github/workflows/templates/$TEMPLATE_LAMBDA_FUNCTION $TEMP_RESOURCE_FILE
+    cp -rf .github/workflows/templates/$TEMPLATE_LAMBDA_FUNCTION $TEMP_RESOURCE_FILE
 
     # tokenize temp file
     FUNCTION_ZIP_PATH_FOR_SED=$(echo $FUNCTION_ZIP_PATH | sed 's/\//\\\//g')
@@ -36,13 +36,28 @@ done
 
 
 # Loop Through Appending Layers
-# LAYER_FOLDERS=$(ls -d src/lambda/layers/*)
-# for layer in $LAYER_FOLDERS; do
-#     folder_path=$layer'/layer.zip'  
-    
+LAYER_FOLDERS=$(ls -d src/lambda/layers/*)
+for layer in $LAYER_FOLDERS; do
 
-# done
+    # set tokens
+    LAYER_ZIP_PATH=$layer'/layer.zip'  
+    LAYER_NAME=${layer//*\/}
 
+    echo "LAYER_ZIP_PATH: $LAYER_ZIP_PATH"
+    echo "LAYER_NAME: $LAYER_NAME"
+
+    # cp template to temp file
+    cp -rf .github/workflows/templates/$TEMPLATE_LAMBDA_LAYER $TEMP_RESOURCE_FILE
+
+    # tokenize temp file
+    LAYER_ZIP_PATH_FOR_SED=$(echo $LAYER_ZIP_PATH | sed 's/\//\\\//g')
+    sed -i "s/__LAYER_ZIP_PATH__/$LAYER_ZIP_PATH_FOR_SED/g" $TEMP_RESOURCE_FILE
+    sed -i "s/__LAYER_NAME__/$LAYER_NAME/g" $TEMP_RESOURCE_FILE
+
+    # append contents of temp file to main.tf
+    cat $TEMP_RESOURCE_FILE >> main.tf
+
+done
 
 # Cleanup
 rm -rf $TEMP_RESOURCE_FILE
