@@ -43,3 +43,6 @@ done
 
 # done
 
+
+# Cleanup
+rm -rf $TEMP_RESOURCE_FILE
