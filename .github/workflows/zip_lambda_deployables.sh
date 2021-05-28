@@ -21,6 +21,7 @@ FUNCTION_FOLDERS=$(ls -d src/lambda/functions/*)
 # zip function payloads
 for func in $FUNCTION_FOLDERS; do
     echo "zipping function: $func"
-    zip -r $func/lambda_function.zip $func/lambda_function.py
+    cd $func
+    zip -r lambda_function.zip lambda_function.py
 done
 echo "packaging of lambda functions complete"
