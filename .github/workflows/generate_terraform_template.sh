@@ -26,7 +26,7 @@ for func in $FUNCTION_FOLDERS; do
     # tokenize temp file
     FUNCTION_ZIP_PATH_FOR_SED=$(echo $FUNCTION_ZIP_PATH | sed 's/\//\\\//g')
     sed -i "s/__FUNCTION_ZIP_PATH__/$FUNCTION_ZIP_PATH_FOR_SED/g" $TEMP_RESOURCE_FILE
-    sed -i "s/FUNCTION_NAME/$FUNCTION_ZIP_PATH_FOR_SED/g" $TEMP_RESOURCE_FILE
+    sed -i "s/FUNCTION_NAME/$FUNCTION_NAME/g" $TEMP_RESOURCE_FILE
 
     # append contents of temp file to main.tf
     cat $TEMP_RESOURCE_FILE >> main.tf
