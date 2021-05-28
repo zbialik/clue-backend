@@ -3,4 +3,4 @@
 
 LAYER_FOLDERS=$(ls -d src/lambda/layers/*)
 
-cp .github/worfklows/templates/main.tf main.tf
+cp .github/workflows/templates/main.tf main.tf
