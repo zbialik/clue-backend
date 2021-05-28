@@ -15,7 +15,7 @@ LAYER_FOLDERS=$(ls -d ${WORKSPACE}/src/lambda/layers/*)
 touch temp.txt
 for layer in $LAYER_FOLDERS; do
     # set tokens
-    LAYER_ZIP_PATH=${WORKSPACE}/$layer'/layer.zip'  
+    LAYER_ZIP_PATH=$layer'/layer.zip'  
     LAYER_NAME=${layer//*\/}
 
     echo "LAYER_ZIP_PATH: $LAYER_ZIP_PATH"
