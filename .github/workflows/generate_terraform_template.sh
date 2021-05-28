@@ -21,8 +21,8 @@ for layer in $LAYER_FOLDERS; do
     echo "LAYER_NAME: $LAYER_NAME"
 
     # also generate dependencies to insert into functions resources later
-    line_to_add="    aws_lambda_layer_version.${LAYER_NAME}.arn,"
-    echo $line_to_add >> temp.txt
+    line_to_add="aws_lambda_layer_version.${LAYER_NAME}.arn,"
+    echo '    '$line_to_add >> temp.txt
 
     # cp template to temp file
     cp -rf .github/workflows/templates/$TEMPLATE_LAMBDA_LAYER $TEMP_RESOURCE_FILE
