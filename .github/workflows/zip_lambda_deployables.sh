@@ -9,7 +9,8 @@ LAYER_FOLDERS=$(ls -d src/lambda/layers/*)
 # zip layer payloads
 for layer in $LAYER_FOLDERS; do
     echo "zipping layer: $layer"
-    zip -r $layer/layer $layer/python/
+    cd $layer
+    zip -r layer python/
 done
 echo "packaging of lambda layers complete"
 
