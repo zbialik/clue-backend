@@ -29,6 +29,7 @@ for func in $FUNCTION_FOLDERS; do
     sed -i "s/__FUNCTION_NAME__/$FUNCTION_NAME/g" $TEMP_RESOURCE_FILE
 
     # append contents of temp file to main.tf
+    cat $TEMP_RESOURCE_FILE
     cat $TEMP_RESOURCE_FILE >> main.tf
 
 done
