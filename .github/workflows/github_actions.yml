@@ -1,4 +1,4 @@
-name: 'AWS Serverless App Pipeline'
+name: 'AWS Serverless Deployment Pipeline'
 
 on:
   push:
