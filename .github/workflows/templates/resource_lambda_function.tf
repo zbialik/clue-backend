@@ -4,7 +4,7 @@ resource "aws_lambda_function" "__FUNCTION_NAME__" {
   role          = "arn:aws:iam::228573559958:role/service-role/ClueLamdaBaseRole"
   handler       = "lambda_function.lambda_handler"
   layers = [
-    __LAYERS_ARN_LIST__
+__LAYERS_ARN_LIST__
   ]
 
   # The filebase64sha256() function is available in Terraform 0.11.12 and later
