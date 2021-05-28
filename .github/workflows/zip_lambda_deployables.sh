@@ -3,8 +3,9 @@
 
 # LAYER WORKFLOW
 # get list of layers
+WORKSPACE=$(pwd)
 echo "starting packaging of lambda layers"
-LAYER_FOLDERS=$(ls -d src/lambda/layers/*)
+LAYER_FOLDERS=$(ls -d ${WORKSPACE}/src/lambda/layers/*)
 
 # zip layer payloads
 for layer in $LAYER_FOLDERS; do
@@ -17,7 +18,7 @@ echo "packaging of lambda layers complete"
 # FUNCTION WORKFLOW
 # get list of functions
 echo "starting packaging of lambda functions"
-FUNCTION_FOLDERS=$(ls -d src/lambda/functions/*)
+FUNCTION_FOLDERS=$(ls -d ${WORKSPACE}/src/lambda/functions/*)
 
 # zip function payloads
 for func in $FUNCTION_FOLDERS; do
