@@ -28,11 +28,11 @@ jobs:
         chmod +x ${GITHUB_WORKSPACE}/.github/workflows/zip_lambda_deployables.sh
         ${GITHUB_WORKSPACE}/.github/workflows/zip_lambda_deployables.sh
     
-    - uses: papeloto/action-zip@v1
-      with:
-        files: src/lambda/functions/create-game/lambda_function.py
-        recursive: false
-        dest: src/lambda/functions/create-game/lambda_function.zip
+    # - uses: papeloto/action-zip@v1
+    #   with:
+    #     files: src/lambda/functions/create-game/lambda_function.py
+    #     recursive: false
+    #     dest: src/lambda/functions/create-game/lambda_function.zip
 
     # Deployment Phase
     - name: Configure AWS Credentials
