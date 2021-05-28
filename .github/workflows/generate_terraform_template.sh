@@ -8,7 +8,6 @@ TEMPLATE_LAMBDA_LAYER="resource_lambda_layer.tf"
 
 # Copy Main Template File
 cp .github/workflows/templates/main.tf main.tf
-cat main.tf
 
 # Loop Through Appending Functions
 FUNCTION_FOLDERS=$(ls -d src/lambda/functions/*)
@@ -30,10 +29,11 @@ for func in $FUNCTION_FOLDERS; do
     sed -i "s/__FUNCTION_NAME__/$FUNCTION_NAME/g" $TEMP_RESOURCE_FILE
 
     # append contents of temp file to main.tf
-    cat $TEMP_RESOURCE_FILE
     cat $TEMP_RESOURCE_FILE >> main.tf
 
 done
+
+cat main.tf
 
 
 # Loop Through Appending Layers
