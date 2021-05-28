@@ -8,6 +8,7 @@ TEMPLATE_LAMBDA_LAYER="resource_lambda_layer.tf"
 
 # Copy Main Template File
 cp .github/workflows/templates/main.tf main.tf
+cat main.tf
 
 # Loop Through Appending Functions
 FUNCTION_FOLDERS=$(ls -d src/lambda/functions/*)
