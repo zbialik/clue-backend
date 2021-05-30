@@ -62,7 +62,7 @@ CHECK_DIR=$(ls $search_dir)
 processLambdaFunction() {
     FUNCTION_DIRECTORY=$1
     cd $FUNCTION_DIRECTORY
-    zip -r $lambda_function.zip lambda_function.py
+    zip -r lambda_function.zip lambda_function.py
     cd $WORKSPACE
 
     # set tokens
