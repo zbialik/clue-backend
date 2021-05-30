@@ -91,7 +91,10 @@ while [[ "$CHECK_DIR" == *"$RESOURCES_DIR"* ]]; do
     FUNCTION_FOLDERS=$(ls -d $search_dir/methods/*/*)
     for func in $FUNCTION_FOLDERS; do
         appendLambdaFunctionResource $func
+        cd $func
+        zip -r $func/lambda_function.zip lambda_function.py
     done
+    cd $WORKSPACE
 
     CHECK_DIR=$(ls $search_dir)
 done
