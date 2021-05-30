@@ -10,9 +10,6 @@ TEMPLATES_DIR=".github/workflows/templates"
 TEMPLATE_LAMBDA_FUNCTION="${TEMPLATES_DIR}/resources/lambda_function.tf"
 TEMPLATE_LAMBDA_LAYER="${TEMPLATES_DIR}/resources/lambda_layer.tf"
 
-# Copy Main Template File
-cp ${TEMPLATES_DIR}/main.tf main.tf
-
 # Loop Through Appending Layers
 LAYER_FOLDERS=$(ls -d ${WORKSPACE}/src/lambda/layers/*)
 touch temp.txt

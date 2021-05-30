@@ -1,6 +1,7 @@
 from player import Player
 import clue_constants as clue
 from clue_helpers import *
+import json
 
 class Game():
 
@@ -26,15 +27,9 @@ class Game():
     desired_character = self.character_map.get(character_name)
     if isinstance(desired_character, Player):
       print("Sorry, the character is already selected. Please select another character.")
-    
-    # TODO: check if character exists in map
-    
     else:
         character_home = self.character_map.get(character_name).get('home')
         new_player = {
           character_name: Player(not self.has_player(), player_name, character_name, character_home)
         }
         self.character_map.update(new_player)
-
-
-  

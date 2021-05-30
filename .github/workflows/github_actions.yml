@@ -22,17 +22,16 @@ jobs:
     # Checkout the repository to the GitHub Actions runner
     - name: Checkout
       uses: actions/checkout@v2
-
-    # # Build/Zip All Lambda Deployables
-    # - name: Zip Lambda Deployables
-    #   run: |
-    #     chmod +x ${GITHUB_WORKSPACE}/.github/workflows/zip_lambda_deployables.sh
-    #     ${GITHUB_WORKSPACE}/.github/workflows/zip_lambda_deployables.sh
     
-    - name: Update Terraform Template
+    # - name: Prepare API Gateway
+    #   run: |
+    #     chmod +x ${GITHUB_WORKSPACE}/.github/workflows/prepare_api_gateway.sh
+    #     ${GITHUB_WORKSPACE}/.github/workflows/prepare_api_gateway.sh 
+    
+    - name: Prepare Lambda
       run: |
-        chmod +x ${GITHUB_WORKSPACE}/.github/workflows/prepare_terraform.sh
-        ${GITHUB_WORKSPACE}/.github/workflows/prepare_terraform.sh
+        chmod +x ${GITHUB_WORKSPACE}/.github/workflows/prepare_lambda.sh
+        ${GITHUB_WORKSPACE}/.github/workflows/prepare_lambda.sh
 
     # Deployment Phase
     - name: Configure AWS Credentials
