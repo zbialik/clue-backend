@@ -3,6 +3,8 @@
 
 # Set Constants
 WORKSPACE=$(pwd)
+METHODS_DIR='methods'
+RESOURCES_DIR='resources'
 TEMP_RESOURCE_FILE="temp_resource.tf"
 TEMPLATES_DIR=".github/workflows/templates"
 TEMPLATE_LAMBDA_FUNCTION="${TEMPLATES_DIR}/resources/lambda_function.tf"
@@ -41,13 +43,42 @@ done
 # remove final comma for layer dependencies
 sed -i '$s/,$//' < temp.txt
 
-# Loop Through Appending Functions
-FUNCTION_FOLDERS=$(ls -d src/lambda/functions/*)
-for func in $FUNCTION_FOLDERS; do
+
+# Recursively Append Functions and API Gateway Integrations
+search_dir='src/api_gateway'
+cmd="ls $search_dir"
+CHECK_DIR=$($cmd)
+# count=0
+
+# Recurse through resources directories
+while [[ "$CHECK_DIR" == *"$RESOURCES_DIR"* ]]; do
+    # count=$((count+1))
+
+
+    # loop through functions for the given resources
+    FUNCTION_FOLDERS=$(ls -d $search_dir/methods/*/*)
+    for func in $FUNCTION_FOLDERS; do
+        appendLambdaFunctionResource() $func
+    done
+
+    
+
+
+
+    echo "api_gateway subdirectory contains 'resources' dir - recursing through subdirectories"
+    cmd=$cmd'/*/'
+    CHECK_DIR=$($cmd)
+done
+
+
+
+# Helper function for appending function to main.tf
+appendLambdaFunctionResource() {
+    FUNCTION_DIRECTORY=$1
 
     # set tokens
-    FUNCTION_ZIP_PATH=$func'/lambda_function.zip'
-    FUNCTION_NAME=${func//*\/}
+    FUNCTION_ZIP_PATH=$FUNCTION_DIRECTORY'/lambda_function.zip'
+    FUNCTION_NAME=${FUNCTION_DIRECTORY//*\/}
 
     echo "FUNCTION_ZIP_PATH: $FUNCTION_ZIP_PATH"
     echo "FUNCTION_NAME: $FUNCTION_NAME"
@@ -66,7 +97,34 @@ for func in $FUNCTION_FOLDERS; do
 
     # append contents of temp file to main.tf
     cat $TEMP_RESOURCE_FILE >> main.tf
-done
+}
+
+# # Loop Through Appending Functions
+# FUNCTION_FOLDERS=$(ls -d src/lambda/functions/*)
+# for func in $FUNCTION_FOLDERS; do
+
+#     # set tokens
+#     FUNCTION_ZIP_PATH=$func'/lambda_function.zip'
+#     FUNCTION_NAME=${func//*\/}
+
+#     echo "FUNCTION_ZIP_PATH: $FUNCTION_ZIP_PATH"
+#     echo "FUNCTION_NAME: $FUNCTION_NAME"
+
+#     # cp template to temp file
+#     cp -rf $TEMPLATE_LAMBDA_FUNCTION $TEMP_RESOURCE_FILE
+
+#     # tokenize temp file
+#     FUNCTION_ZIP_PATH_FOR_SED=$(echo $FUNCTION_ZIP_PATH | sed 's/\//\\\//g')
+#     sed -i "s/__FUNCTION_ZIP_PATH__/$FUNCTION_ZIP_PATH_FOR_SED/g" $TEMP_RESOURCE_FILE
+#     sed -i "s/__FUNCTION_NAME__/$FUNCTION_NAME/g" $TEMP_RESOURCE_FILE
+
+#     # insert layer dependencies into function resource
+#     sed -i '/__LAYERS_ARN_LIST__/r temp.txt' $TEMP_RESOURCE_FILE
+#     sed -i 's/__LAYERS_ARN_LIST__//g' $TEMP_RESOURCE_FILE
+
+#     # append contents of temp file to main.tf
+#     cat $TEMP_RESOURCE_FILE >> main.tf
+# done
 
 # Cleanup
 rm -rf $TEMP_RESOURCE_FILE
