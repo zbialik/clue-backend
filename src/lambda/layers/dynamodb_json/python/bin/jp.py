@@ -1,4 +1,4 @@
-#!/Library/Frameworks/Python.framework/Versions/2.7/Resources/Python.app/Contents/MacOS/Python
+#!/Library/Frameworks/Python.framework/Versions/3.8/bin/python3.8
 
 import sys
 import json

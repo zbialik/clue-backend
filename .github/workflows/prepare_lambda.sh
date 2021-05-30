@@ -48,13 +48,6 @@ sed -i '$s/,$//' < temp.txt
 search_dir='src/api_gateway'
 CHECK_DIR=$(ls $search_dir)
 
-# Commented out because I have no methods defined at API Root
-# loop through functions for the root api resource
-# FUNCTION_FOLDERS=$(ls -d $search_dir/methods/*/*)
-# for func in $FUNCTION_FOLDERS; do
-#     appendLambdaFunctionResource() $func
-# done
-
 # Helper function for appending function to main.tf
 processLambdaFunction() {
     FUNCTION_DIRECTORY=$1
