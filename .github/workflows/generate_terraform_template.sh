@@ -44,6 +44,7 @@ done
 sed -i '$s/,$//' < temp.txt
 
 # Recursively Append Functions and API Gateway Integrations
+echo "BEING RECURSION"
 search_dir='src/api_gateway'
 CHECK_DIR=$(ls $search_dir)
 
