@@ -17,10 +17,8 @@ TEMPLATE_LAMBDA_LAYER= utils.TEMPLATES_DIR + "/resources/lambda_layer.tf"
 def lamda_worflow():
 
     def layers_worfklow():
-
         layers_directories = utils.get_all_sub_directory_names(LAMBDA_LAYERS_DIR)
         for layer in layers_directories:
-            
             # 1. Zip Lambda Layer Deployable
             zip_path = LAMBDA_LAYERS_DIR + '/' + layer + '/layer'
             target_dir = LAMBDA_LAYERS_DIR + '/' + layer + '/python'
@@ -36,7 +34,7 @@ def lamda_worflow():
                     # token replacement for line of template
                     line_to_append = line.replace('__LAYER_NAME__',layer).replace('__LAYER_ZIP_PATH__',zip_path + '.zip')
                     utils.append_new_line(TERRAFORM_TEMPLATE_PATH, line_to_append)
-                        
+
     def functions_worfklow():
         def process_lambda_functions_dirs(search_dir):
             print('executing: process_lambda_functions_dirs(%s)' % search_dir)
@@ -82,7 +80,7 @@ def lamda_worflow():
 
     
     # Layers Workflow
-    # layers_worfklow()
+    layers_worfklow()
 
     # Functions Workflow
     functions_worfklow()

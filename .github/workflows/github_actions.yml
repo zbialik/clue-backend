@@ -30,8 +30,8 @@ jobs:
     
     - name: Prepare Lambda
       run: |
-        chmod +x ${GITHUB_WORKSPACE}/.github/workflows/prepare_lambda.sh
-        ${GITHUB_WORKSPACE}/.github/workflows/prepare_lambda.sh
+        chmod +x ${GITHUB_WORKSPACE}/.github/workflows/prepare_lambda.py
+        python ${GITHUB_WORKSPACE}/.github/workflows/prepare_lambda.py
 
     # Deployment Phase
     - name: Configure AWS Credentials
