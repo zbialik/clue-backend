@@ -59,8 +59,11 @@ CHECK_DIR=$(ls $search_dir)
 # done
 
 # Helper function for appending function to main.tf
-appendLambdaFunctionResource() {
+processLambdaFunction() {
     FUNCTION_DIRECTORY=$1
+    cd $FUNCTION_DIRECTORY
+    zip -r $lambda_function.zip lambda_function.py
+    cd $WORKSPACE
 
     # set tokens
     FUNCTION_ZIP_PATH=$FUNCTION_DIRECTORY'/lambda_function.zip'
@@ -94,9 +97,7 @@ while [[ "$CHECK_DIR" == *"$RESOURCES_DIR"* ]]; do
     # loop through functions for the given resources
     FUNCTION_FOLDERS=$(ls -d $search_dir/methods/*/*)
     for func in $FUNCTION_FOLDERS; do
-        appendLambdaFunctionResource $func
-        cd $func
-        zip -r $func/lambda_function.zip lambda_function.py
+        processLambdaFunction $func
     done
     cd $WORKSPACE
 
