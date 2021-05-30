@@ -23,8 +23,6 @@ def lamda_worflow():
             zip_path = LAMBDA_LAYERS_DIR + '/' + layer + '/layer'
             target_dir = LAMBDA_LAYERS_DIR + '/' + layer + '/python'
 
-            print("target_dir: " + target_dir)
-            print("zip_path: " + zip_path + '.zip')
             utils.zip_lambda_deployable(target_dir, zip_path)
 
             # 2. Update Terraform Template for Lambda Layer
@@ -37,8 +35,6 @@ def lamda_worflow():
 
     def functions_worfklow():
         def process_lambda_functions_dirs(search_dir):
-            print('executing: process_lambda_functions_dirs(%s)' % search_dir)
-            # path_to_methods must end with /methods
             def process_method_functions(path_to_methods):
                 if os.path.isdir(path_to_methods):
                     method_folders = utils.get_all_sub_directory_names(path_to_methods)
@@ -52,8 +48,7 @@ def lamda_worflow():
                         function_folder_path = method_folder_path + '/' + function_name
                         
                         function_zip_path = function_folder_path + '/lambda_function.zip'
-                        # print('zipping '+ function_name +' function to: ' + function_zip_path)
-                        # utils.zip_lambda_deployable(function_folder_path + '/' + utils.LAMBDA_FUNCTION_FILENAME, function_zip_path)
+                        utils.zip_lambda_deployable(function_folder_path + '/' + utils.LAMBDA_FUNCTION_FILENAME, function_zip_path)
 
                         # 2. Update Terraform Template for Lambda Function
                         utils.append_new_line(TERRAFORM_TEMPLATE_PATH, '\n')
