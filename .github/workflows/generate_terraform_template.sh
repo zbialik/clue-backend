@@ -44,7 +44,6 @@ done
 sed -i '$s/,$//' < temp.txt
 
 # Recursively Append Functions and API Gateway Integrations
-echo "BEING RECURSION"
 search_dir='src/api_gateway'
 CHECK_DIR=$(ls $search_dir)
 
@@ -91,7 +90,7 @@ while [[ "$CHECK_DIR" == *"$RESOURCES_DIR"* ]]; do
     # loop through functions for the given resources
     FUNCTION_FOLDERS=$(ls -d $search_dir/methods/*/*)
     for func in $FUNCTION_FOLDERS; do
-        appendLambdaFunctionResource() $func
+        appendLambdaFunctionResource $func
     done
 
     CHECK_DIR=$(ls $search_dir)
