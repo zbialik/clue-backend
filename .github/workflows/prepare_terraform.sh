@@ -17,6 +17,10 @@ cp ${TEMPLATES_DIR}/main.tf main.tf
 LAYER_FOLDERS=$(ls -d ${WORKSPACE}/src/lambda/layers/*)
 touch temp.txt
 for layer in $LAYER_FOLDERS; do
+    cd $layer
+    zip -r layer python/
+    cd $WORKSPACE
+    
     # set tokens
     LAYER_ZIP_PATH=$layer'/layer.zip'  
     LAYER_NAME=${layer//*\/}
