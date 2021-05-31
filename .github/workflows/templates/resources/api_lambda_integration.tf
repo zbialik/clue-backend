@@ -1,7 +1,7 @@
 resource "aws_api_gateway_method" "method" {
   rest_api_id   = aws_api_gateway_rest_api.new-clue-backend.id
-  resource_id   = aws_api_gateway_resource.games.id
-  http_method   = "GET"
+  resource_id   = aws_api_gateway_resource.__RESOURCE_NAME__.id
+  http_method   = "__HTTP_METHOD__"
   authorization = "NONE"
 }
 

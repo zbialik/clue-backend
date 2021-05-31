@@ -37,13 +37,9 @@ def api_gateway_workflow():
                             utils.append_new_line(TERRAFORM_TEMPLATE_PATH, line_to_append)
                     
                     # 2. Recurse through Subresources
-                    resource_folder_path = path_to_resources + '/' + resource
-                    subresources = utils.get_all_sub_directory_names(search_dir)
-                    if os.path.isdir(resource_folder_path + '/' + utils.RESOURCES_DIR_NAME):
-                        for subresource in subresources:
-                            print(resource + " has subresource " + subresource + " - recursing through")
-                            search_dir_subresource = resource_folder_path + '/' + subresource
-                            process_resources(search_dir_subresource) # recurse
+                    subresources_folder_path = path_to_resources + '/' + resource + '/' + utils.RESOURCES_DIR_NAME
+                    process_resources(subresources_folder_path)
+                    
         
         print('starting api gateway "resource" workflow')
 
