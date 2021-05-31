@@ -19,10 +19,18 @@ TEMPLATE_API_GATEWAY_INTEGRATION= utils.TEMPLATES_DIR + "/resources/apigateway_i
 
 # Set Custom Variables
 API_GATEWAY_REST_API_NAME = 'new-clue-backend'
+ROOT_RESOURCE_NAME = 'api_gateway'
 
 def api_gateway_workflow():
     def gateway_resource_workflow():
         def process_resources(path_to_resources):
+            path_to_resources = path_to_resources.rstrip('/')
+            parent_resource = path_to_resources.split('/')[-2]
+            if parent_resource == ROOT_RESOURCE_NAME:
+                parent_resource_id_variable = 'aws_api_gateway_rest_api.__API_GATEWAY_REST_API_NAME__.root_resource_id'
+            else:
+                parent_resource_id_variable = 'aws_api_gateway_resource.' + parent_resource + '.id'
+
             if os.path.isdir(path_to_resources):
                 
                 resource_folders = utils.get_all_sub_directory_names(path_to_resources)
@@ -34,7 +42,7 @@ def api_gateway_workflow():
                     with open(TEMPLATE_API_GATEWAY_RESOURCE, 'r') as reader:
                         for line in reader:
                             # token replacement for line of template
-                            line_to_append = line.replace('__API_GATEWAY_RESOURCE_NAME__',resource).replace('__API_GATEWAY_REST_API_NAME__',API_GATEWAY_REST_API_NAME)
+                            line_to_append = line.replace('__API_GATEWAY_RESOURCE_NAME__',resource).replace('__API_GATEWAY_REST_API_NAME__',API_GATEWAY_REST_API_NAME).replace('__PARENT_RESOURCE_ID_VARIABLE__',parent_resource_id_variable)
                             utils.append_new_line(TERRAFORM_TEMPLATE_PATH, line_to_append)
                     
                     # 2. Recurse through Subresources
