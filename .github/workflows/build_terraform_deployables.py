@@ -18,7 +18,7 @@ TEMPLATE_API_GATEWAY_REST_API= utils.TEMPLATES_DIR + "/resources/apigateway_rest
 TEMPLATE_API_GATEWAY_INTEGRATION= utils.TEMPLATES_DIR + "/resources/apigateway_integration.tf"
 
 # Set Custom Variables
-API_GATEWAY_REST_API_NAME = 'new-clue-backend'
+API_GATEWAY_REST_API_NAME = 'clue-backend'
 
 def api_gateway_workflow():
     def gateway_resource_workflow():
