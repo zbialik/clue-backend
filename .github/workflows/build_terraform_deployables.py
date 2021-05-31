@@ -65,6 +65,9 @@ def api_gateway_workflow():
                 utils.append_new_line(TERRAFORM_TEMPLATE_PATH, line_to_append)
     
     def gateway_integration_workflow():
+        # TODO: NEED TO RECURSE TO OTHER RESOURCES, NOT JUST THE MAIN
+        # TODO: FIGURE OUT WHY NOTHING HERE IS GETTING APPENDED
+
         def process_methods(path_to_methods):
             path_to_methods = path_to_methods.rstrip('/')
             resource_name = path_to_methods.split('/')[-2]
