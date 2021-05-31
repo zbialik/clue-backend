@@ -10,7 +10,7 @@ import shutil, os
 # set local variables
 WORKSPACE = os.getcwd()
 LAMBDA_LAYERS_DIR = WORKSPACE + '/src/lambda/layers'
-TERRAFORM_TEMPLATE_PATH = WORKSPACE + '/main-test.tf'
+TERRAFORM_TEMPLATE_PATH = WORKSPACE + '/main.tf'
 TEMPLATE_LAMBDA_FUNCTION= utils.TEMPLATES_DIR + "/resources/lambda_function.tf"
 TEMPLATE_LAMBDA_LAYER= utils.TEMPLATES_DIR + "/resources/lambda_layer.tf"
 
