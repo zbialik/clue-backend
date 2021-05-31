@@ -85,6 +85,9 @@ def main():
     # Lambda Worfklow
     lamda_worflow()
 
+    with open(TERRAFORM_TEMPLATE_PATH, 'r') as reader:
+        for line in reader:
+            print(line)
     # API Gateway Workflow
 
     # DynamoDB Workflow
