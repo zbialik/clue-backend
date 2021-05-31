@@ -13,9 +13,65 @@ LAMBDA_LAYERS_DIR = WORKSPACE + '/src/lambda/layers'
 TERRAFORM_TEMPLATE_PATH = WORKSPACE + '/main.tf'
 TEMPLATE_LAMBDA_FUNCTION= utils.TEMPLATES_DIR + "/resources/lambda_function.tf"
 TEMPLATE_LAMBDA_LAYER= utils.TEMPLATES_DIR + "/resources/lambda_layer.tf"
+TEMPLATE_API_GATEWAY_RESOURCE= utils.TEMPLATES_DIR + "/resources/apigateway_resource.tf"
+TEMPLATE_API_GATEWAY_REST_API= utils.TEMPLATES_DIR + "/resources/apigateway_rest_api.tf"
+TEMPLATE_API_GATEWAY_INTEGRATION= utils.TEMPLATES_DIR + "/resources/apigateway_integration.tf"
+
+# Set Custom Variables
+API_GATEWAY_REST_API_NAME = 'new-clue-backend'
+
+def api_gateway_workflow():
+    def gateway_resource_workflow():
+        def process_resources(path_to_resources):
+            if os.path.isdir(path_to_resources):
+                
+                resource_folders = utils.get_all_sub_directory_names(path_to_resources)
+                for resource in resource_folders:
+                    print('processing resource: ' + resource)
+                    # 1. Update Terraform Template for API Gateway Resource
+                    utils.append_new_line(TERRAFORM_TEMPLATE_PATH, '\n')
+                    with open(TEMPLATE_API_GATEWAY_RESOURCE, 'r') as reader:
+                        for line in reader:
+                            # token replacement for line of template
+                            line_to_append = line.replace('__API_GATEWAY_RESOURCE_NAME__',resource).replace('__API_GATEWAY_REST_API_NAME__',API_GATEWAY_REST_API_NAME)
+                            utils.append_new_line(TERRAFORM_TEMPLATE_PATH, line_to_append)
+                    
+                    # 2. Recurse through Subresources
+                    resource_folder_path = path_to_resources + '/' + resource
+                    subresources = utils.get_all_sub_directory_names(search_dir)
+                    if os.path.isdir(resource_folder_path + '/' + utils.RESOURCES_DIR_NAME):
+                        for subresource in subresources:
+                            print(resource + " has subresource " + subresource + " - recursing through")
+                            search_dir_subresource = resource_folder_path + '/' + subresource
+                            process_resources(search_dir_subresource) # recurse
+        
+        print('starting api gateway "resource" workflow')
+
+        # Loop over all API Resources
+        search_dir = WORKSPACE + '/src/api_gateway/' + utils.RESOURCES_DIR_NAME
+        process_resources(search_dir)
+
+    def gateway_rest_api_workflow():
+        print('starting api gateway "rest api" workflow')
+        with open(TEMPLATE_API_GATEWAY_REST_API, 'r') as reader:
+            for line in reader:
+                line_to_append = line.replace('__API_GATEWAY_REST_API_NAME__',API_GATEWAY_REST_API_NAME)
+                utils.append_new_line(TERRAFORM_TEMPLATE_PATH, line_to_append)
+    
+    def gateway_integration_workflow():
+        print('starting api gateway "rest api" workflow')
+    
+    # append API Gateway - Rest API template
+    gateway_rest_api_workflow()
+
+    # append API Gateway - Resource template
+    gateway_resource_workflow()
+
+    # append API Gateway - Integration template
+
+
 
 def lamda_worflow():
-
     def layers_worfklow():
         layers_directories = utils.get_all_sub_directory_names(LAMBDA_LAYERS_DIR)
         for layer in layers_directories:
@@ -84,16 +140,16 @@ def main():
 
     # Lambda Worfklow
     lamda_worflow()
-
-    with open(TERRAFORM_TEMPLATE_PATH, 'r') as reader:
-        for line in reader:
-            print(line)
     
     # API Gateway Workflow
+    api_gateway_workflow()
 
     # DynamoDB Workflow
 
-    # utils.zip_lambda_deployable('/Users/zachbialik/git/clue-backend/src/api_gateway/resources/games/methods/post/create-game/lambda_function.py','/Users/zachbialik/git/clue-backend/src/api_gateway/resources/games/methods/post/create-game/lambda_function.zip')
-
+    a_file = open(TERRAFORM_TEMPLATE_PATH)
+    lines = a_file.readlines()
+    for line in lines:
+        print(line)
+    
 if __name__ == "__main__":
     main()

@@ -23,15 +23,10 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
     
-    # - name: Prepare API Gateway
-    #   run: |
-    #     chmod +x ${GITHUB_WORKSPACE}/.github/workflows/prepare_api_gateway.sh
-    #     ${GITHUB_WORKSPACE}/.github/workflows/prepare_api_gateway.sh 
-    
     - name: Prepare Lambda
       run: |
-        chmod +x ${GITHUB_WORKSPACE}/.github/workflows/prepare_lambda.py
-        python ${GITHUB_WORKSPACE}/.github/workflows/prepare_lambda.py
+        chmod +x ${GITHUB_WORKSPACE}/.github/workflows/build_terraform_deployables.py
+        python ${GITHUB_WORKSPACE}/.github/workflows/build_terraform_deployables.py
 
     # Deployment Phase
     - name: Configure AWS Credentials
