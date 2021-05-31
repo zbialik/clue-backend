@@ -24,10 +24,12 @@ ROOT_RESOURCE_NAME = 'api_gateway'
 def api_gateway_workflow():
     def gateway_resource_workflow():
         def process_resources(path_to_resources):
+
+            # Get Parent Resource ID for Resource Template Token
             path_to_resources = path_to_resources.rstrip('/')
             parent_resource = path_to_resources.split('/')[-2]
             if parent_resource == ROOT_RESOURCE_NAME:
-                parent_resource_id_variable = 'aws_api_gateway_rest_api.__API_GATEWAY_REST_API_NAME__.root_resource_id'
+                parent_resource_id_variable = 'aws_api_gateway_rest_api.' + API_GATEWAY_REST_API_NAME + '.root_resource_id'
             else:
                 parent_resource_id_variable = 'aws_api_gateway_resource.' + parent_resource + '.id'
 
