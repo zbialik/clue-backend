@@ -4,7 +4,7 @@ on:
   push:
     branches:
     - main
-    - templating_branch
+    - python_refactor
   pull_request:
 
 jobs:
@@ -22,17 +22,11 @@ jobs:
     # Checkout the repository to the GitHub Actions runner
     - name: Checkout
       uses: actions/checkout@v2
-
-    # Build/Zip All Lambda Deployables
-    - name: Zip Lambda Deployables
-      run: |
-        chmod +x ${GITHUB_WORKSPACE}/.github/workflows/zip_lambda_deployables.sh
-        ${GITHUB_WORKSPACE}/.github/workflows/zip_lambda_deployables.sh
     
-    - name: Update Terraform Template
+    - name: Prepare Lambda
       run: |
-        chmod +x ${GITHUB_WORKSPACE}/.github/workflows/generate_terraform_template.sh
-        ${GITHUB_WORKSPACE}/.github/workflows/generate_terraform_template.sh
+        chmod +x ${GITHUB_WORKSPACE}/.github/workflows/build_terraform_deployables.py
+        python ${GITHUB_WORKSPACE}/.github/workflows/build_terraform_deployables.py
 
     # Deployment Phase
     - name: Configure AWS Credentials
