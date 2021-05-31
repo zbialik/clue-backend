@@ -10,7 +10,7 @@ import shutil, os
 # set local variables
 WORKSPACE = os.getcwd()
 LAMBDA_LAYERS_DIR = WORKSPACE + '/src/lambda/layers'
-TERRAFORM_TEMPLATE_PATH = WORKSPACE + '/main-test.tf'
+TERRAFORM_TEMPLATE_PATH = WORKSPACE + '/main.tf'
 TEMPLATE_LAMBDA_FUNCTION= utils.TEMPLATES_DIR + "/resources/lambda_function.tf"
 TEMPLATE_LAMBDA_LAYER= utils.TEMPLATES_DIR + "/resources/lambda_layer.tf"
 
@@ -89,7 +89,9 @@ def main():
 
     # DynamoDB Workflow
 
-    # utils.zip_lambda_deployable('/Users/zachbialik/git/clue-backend/src/api_gateway/resources/games/methods/post/create-game/lambda_function.py','/Users/zachbialik/git/clue-backend/src/api_gateway/resources/games/methods/post/create-game/lambda_function.zip')
-
+    print('TERRAFORM TEMPLATE: ')
+    with open(TEMPLATE_LAMBDA_FUNCTION, 'r') as reader:
+        for line in reader:
+            print(line)
 if __name__ == "__main__":
     main()
