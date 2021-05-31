@@ -28,6 +28,7 @@ def api_gateway_workflow():
                 resource_folders = utils.get_all_sub_directory_names(path_to_resources)
                 for resource in resource_folders:
                     print('processing resource: ' + resource)
+
                     # 1. Update Terraform Template for API Gateway Resource
                     utils.append_new_line(TERRAFORM_TEMPLATE_PATH, '\n')
                     with open(TEMPLATE_API_GATEWAY_RESOURCE, 'r') as reader:
@@ -39,7 +40,6 @@ def api_gateway_workflow():
                     # 2. Recurse through Subresources
                     subresources_folder_path = path_to_resources + '/' + resource + '/' + utils.RESOURCES_DIR_NAME
                     process_resources(subresources_folder_path)
-                    
         
         print('starting api gateway "resource" workflow')
 
@@ -55,7 +55,27 @@ def api_gateway_workflow():
                 utils.append_new_line(TERRAFORM_TEMPLATE_PATH, line_to_append)
     
     def gateway_integration_workflow():
-        print('starting api gateway "rest api" workflow')
+        print('starting api gateway "integration" workflow')
+        def process_methods(path_to_methods):
+            path_to_methods = path_to_methods.rstrip('/')
+            resource_name = path_to_methods.split('/')[-2]
+            if os.path.isdir(path_to_methods):
+                method_folders = utils.get_all_sub_directory_names(path_to_methods)
+                for method in method_folders:
+
+                    # 1. Get Lambda Function Name for API Gateway Integration
+                    method_folder_path = path_to_methods + '/' + method
+                    function_name = utils.get_all_sub_directory_names(method_folder_path)[0] # only one function per method
+                    print('processing api-gateway integration for function: ' + function_name)
+
+                    # 2. Update Terraform Template for AWS API Gateway Integration
+                    utils.append_new_line(TERRAFORM_TEMPLATE_PATH, '\n')
+                    with open(TEMPLATE_API_GATEWAY_INTEGRATION, 'r') as reader:
+                        for line in reader:
+                            # token replacement for line of template
+                            line_to_append = line.replace('__API_GATEWAY_RESOURCE_NAME__',resource_name).replace('__API_GATEWAY_REST_API_NAME__',API_GATEWAY_REST_API_NAME).replace('__API_GATEWAY_HTTP_METHOD__',method).replace('__FUNCTION_NAME__',function_name)
+                            utils.append_new_line(TERRAFORM_TEMPLATE_PATH, line_to_append)
+            
     
     # append API Gateway - Rest API template
     gateway_rest_api_workflow()
@@ -64,6 +84,7 @@ def api_gateway_workflow():
     gateway_resource_workflow()
 
     # append API Gateway - Integration template
+    gateway_integration_workflow()
 
 
 
