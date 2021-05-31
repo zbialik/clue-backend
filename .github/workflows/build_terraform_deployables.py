@@ -82,7 +82,7 @@ def api_gateway_workflow():
                     with open(TEMPLATE_API_GATEWAY_INTEGRATION, 'r') as reader:
                         for line in reader:
                             # token replacement for line of template
-                            line_to_append = line.replace('__API_GATEWAY_RESOURCE_NAME__',resource_name).replace('__API_GATEWAY_REST_API_NAME__',API_GATEWAY_REST_API_NAME).replace('__API_GATEWAY_HTTP_METHOD__',method).replace('__FUNCTION_NAME__',function_name)
+                            line_to_append = line.replace('__API_GATEWAY_RESOURCE_NAME__',resource_name).replace('__API_GATEWAY_REST_API_NAME__',API_GATEWAY_REST_API_NAME).replace('__API_GATEWAY_HTTP_METHOD__',method.upper()).replace('__FUNCTION_NAME__',function_name)
                             utils.append_new_line(TERRAFORM_TEMPLATE_PATH, line_to_append)
         
         print('starting api gateway "integration" workflow')
