@@ -4,7 +4,7 @@ on:
   push:
     branches:
     - main
-    - api_gateway_integration
+    - python_refactor
   pull_request:
 
 jobs:
