@@ -65,12 +65,12 @@ def api_gateway_workflow():
                 utils.append_new_line(TERRAFORM_TEMPLATE_PATH, line_to_append)
     
     def gateway_integration_workflow():
-        # TODO: NEED TO RECURSE TO OTHER RESOURCES, NOT JUST THE MAIN
-        # TODO: FIGURE OUT WHY NOTHING HERE IS GETTING APPENDED
-
-        def process_methods(path_to_methods):
-            path_to_methods = path_to_methods.rstrip('/')
+        def process_methods(path_to_resource):
+            path_to_methods = path_to_resource.rstrip('/') + '/' + utils.METHODS_DIR_NAME
+            path_to_resources = path_to_resource.rstrip('/') + '/' + utils.RESOURCES_DIR_NAME
             resource_name = path_to_methods.split('/')[-2]
+
+            # Process all methods for resource
             if os.path.isdir(path_to_methods):
                 method_folders = utils.get_all_sub_directory_names(path_to_methods)
                 for method in method_folders:
@@ -87,11 +87,19 @@ def api_gateway_workflow():
                             # token replacement for line of template
                             line_to_append = line.replace('__API_GATEWAY_RESOURCE_NAME__',resource_name).replace('__API_GATEWAY_REST_API_NAME__',API_GATEWAY_REST_API_NAME).replace('__API_GATEWAY_HTTP_METHOD__',method.upper()).replace('__FUNCTION_NAME__',function_name)
                             utils.append_new_line(TERRAFORM_TEMPLATE_PATH, line_to_append)
+            
+            # Recusively process all subresources
+            if os.path.isdir(path_to_resources):
+                subresources = utils.get_all_sub_directory_names(path_to_resources)
+
+                for subresource in subresources:
+                    path_to_subresource = path_to_resources + '/' + subresource
+                    process_methods(path_to_subresource)
         
-        print('starting api gateway "integration" workflow')
+        print('starting api gateway / lambda "integration" workflow')
 
         # Loop over all API Resources
-        methods_dir = WORKSPACE + '/src/api_gateway/' + utils.METHODS_DIR_NAME
+        methods_dir = WORKSPACE + '/src/api_gateway'
         process_methods(methods_dir)
     
     # append API Gateway - Rest API template
