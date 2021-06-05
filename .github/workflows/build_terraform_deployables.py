@@ -15,7 +15,7 @@ TEMPLATE_LAMBDA_FUNCTION= utils.TEMPLATES_DIR + "/resources/lambda_function.tf"
 TEMPLATE_LAMBDA_LAYER= utils.TEMPLATES_DIR + "/resources/lambda_layer.tf"
 TEMPLATE_API_GATEWAY_RESOURCE= utils.TEMPLATES_DIR + "/resources/apigateway_resource.tf"
 TEMPLATE_API_GATEWAY_REST_API= utils.TEMPLATES_DIR + "/resources/apigateway_rest_api.tf"
-TEMPLATE_API_GATEWAY_INTEGRATION= utils.TEMPLATES_DIR + "/resources/apigateway_integration.tf"
+TEMPLATE_API_GATEWAY_INTEGRATION= utils.TEMPLATES_DIR + "/resources/api_lambda_integration.tf"
 
 # Set Custom Variables
 API_GATEWAY_REST_API_NAME = 'new-clue-backend'
@@ -28,17 +28,17 @@ def api_gateway_workflow():
             # Get Parent Resource ID for Resource Template Token
             path_to_resources = path_to_resources.rstrip('/')
             parent_resource = path_to_resources.split('/')[-2]
+
             if parent_resource == ROOT_RESOURCE_NAME:
                 parent_resource_id_variable = 'aws_api_gateway_rest_api.' + API_GATEWAY_REST_API_NAME + '.root_resource_id'
             else:
                 parent_resource_id_variable = 'aws_api_gateway_resource.' + parent_resource + '.id'
-
+            
             if os.path.isdir(path_to_resources):
-                
                 resource_folders = utils.get_all_sub_directory_names(path_to_resources)
                 for resource in resource_folders:
                     print('processing resource: ' + resource)
-
+                    
                     # 1. Update Terraform Template for API Gateway Resource
                     utils.append_new_line(TERRAFORM_TEMPLATE_PATH, '\n')
                     with open(TEMPLATE_API_GATEWAY_RESOURCE, 'r') as reader:
@@ -50,7 +50,7 @@ def api_gateway_workflow():
                     # 2. Recurse through Subresources
                     subresources_folder_path = path_to_resources + '/' + resource + '/' + utils.RESOURCES_DIR_NAME
                     process_resources(subresources_folder_path)
-
+        
         print('starting api gateway "resource" workflow')
 
         # Loop over all API Resources
