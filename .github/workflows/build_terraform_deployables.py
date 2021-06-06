@@ -29,12 +29,11 @@ def api_gateway_workflow():
             path_to_resources = path_to_resources.rstrip('/')
             parent_resource = path_to_resources.split('/')[-2]
             
-            if ("{" in parent_resource) or ("}" in parent_resource):
-                parent_resource = parent_resource.replace('{','').replace('}','')
-            
             if parent_resource == ROOT_RESOURCE_NAME:
                 parent_resource_id_variable = 'aws_api_gateway_rest_api.' + API_GATEWAY_REST_API_NAME + '.root_resource_id'
             else:
+                if ("{" in parent_resource) or ("}" in parent_resource):
+                    parent_resource = parent_resource.replace('{','').replace('}','')
                 parent_resource_id_variable = 'aws_api_gateway_resource.' + parent_resource + '.id'
             
             if os.path.isdir(path_to_resources):
@@ -57,7 +56,7 @@ def api_gateway_workflow():
                             utils.append_new_line(TERRAFORM_TEMPLATE_PATH, line_to_append)
                     
                     # 2. Recurse through Subresources
-                    subresources_folder_path = path_to_resources + '/' + resource + '/' + utils.RESOURCES_DIR_NAME
+                    subresources_folder_path = path_to_resources + '/' + path_part + '/' + utils.RESOURCES_DIR_NAME
                     process_resources(subresources_folder_path)
         
         print('starting api gateway "resource" workflow')
