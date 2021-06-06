@@ -12,9 +12,8 @@ def lambda_handler(event, context):
     db = boto3.resource('dynamodb', region_name='us-east-1')
     table = db.Table('CLUE_GAMES')
     
-    # get next gameId code
     try:
-        print('activating game ' + str(event['game_id']) + ' now.')
+        print('up game ' + str(event['game_id']) + ' now.')
         
         response_dynamo = table.update_item(
             Key={'game_id': event['game_id']},
