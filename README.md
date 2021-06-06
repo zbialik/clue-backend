@@ -12,6 +12,7 @@ Service Endpoints:
     /games
         /_id_
             /actions
+                /get-game
                 /start-game
                 /move
                 /complete-turn
