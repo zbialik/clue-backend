@@ -28,12 +28,12 @@ def api_gateway_workflow():
             # Get Parent Resource ID for Resource Template Token
             path_to_resources = path_to_resources.rstrip('/')
             parent_resource = path_to_resources.split('/')[-2]
-
+            
+            if ("{" in parent_resource) or ("}" in parent_resource):
+                parent_resource = parent_resource.replace('{','').replace('}','')
+            
             if parent_resource == ROOT_RESOURCE_NAME:
                 parent_resource_id_variable = 'aws_api_gateway_rest_api.' + API_GATEWAY_REST_API_NAME + '.root_resource_id'
-            elif ("{" in parent_resource) or ("}" in parent_resource):
-                parent_resource = parent_resource.replace('{','').replace('}','')
-                parent_resource_id_variable = 'aws_api_gateway_resource.' + parent_resource + '.id'
             else:
                 parent_resource_id_variable = 'aws_api_gateway_resource.' + parent_resource + '.id'
             
@@ -78,6 +78,8 @@ def api_gateway_workflow():
             path_to_methods = path_to_resource.rstrip('/') + '/' + utils.METHODS_DIR_NAME
             path_to_resources = path_to_resource.rstrip('/') + '/' + utils.RESOURCES_DIR_NAME
             resource_name = path_to_methods.split('/')[-2]
+            if ("{" in resource_name) or ("}" in resource_name):
+                resource_name = resource_name.replace('{','').replace('}','')
 
             # Process all methods for resource
             if os.path.isdir(path_to_methods):
