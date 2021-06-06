@@ -41,6 +41,7 @@ def lambda_handler(event, context):
             game_dynamo = table.get_item(
                 Key={'game_id': str(game_id)}
             )
+            game_dict = dynamo_json.loads(game_dynamo)
             
             response = {
                 "statusCode": 200,
@@ -48,7 +49,7 @@ def lambda_handler(event, context):
                     "Content-Type": "application/json"
                 },
                 "isBase64Encoded": False,
-                "body": dynamo_json.loads(game_dynamo['Item'])
+                "body": json.dumps(game_dict)
             }
             
             return response
