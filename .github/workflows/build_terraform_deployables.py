@@ -16,7 +16,6 @@ TEMPLATE_LAMBDA_LAYER= utils.TEMPLATES_DIR + "/resources/lambda_layer.tf"
 TEMPLATE_API_GATEWAY_RESOURCE= utils.TEMPLATES_DIR + "/resources/apigateway_resource.tf"
 TEMPLATE_API_GATEWAY_REST_API= utils.TEMPLATES_DIR + "/resources/apigateway_rest_api.tf"
 TEMPLATE_API_GATEWAY_INTEGRATION= utils.TEMPLATES_DIR + "/resources/api_lambda_integration.tf"
-TEMPLATE_API_GATEWAY_INTEGRATION_PATH_ID= utils.TEMPLATES_DIR + "/resources/api_lambda_integration_path_id.tf"
 
 # Set Custom Variables
 API_GATEWAY_REST_API_NAME = 'clue-backend'
