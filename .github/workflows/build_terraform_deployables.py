@@ -37,6 +37,12 @@ def api_gateway_workflow():
             if os.path.isdir(path_to_resources):
                 resource_folders = utils.get_all_sub_directory_names(path_to_resources)
                 for resource in resource_folders:
+                    
+                    # TODO: refactor/rename 'resources' to 'paths' to match actual meaning
+                    path_part = resource
+                    if ("{" in resource) or ("}" in resource):
+                        resource = resource.replace('{','').replace('}','')
+                    
                     print('processing resource: ' + resource)
                     
                     # 1. Update Terraform Template for API Gateway Resource
@@ -44,7 +50,7 @@ def api_gateway_workflow():
                     with open(TEMPLATE_API_GATEWAY_RESOURCE, 'r') as reader:
                         for line in reader:
                             # token replacement for line of template
-                            line_to_append = line.replace('__API_GATEWAY_RESOURCE_NAME__',resource).replace('__API_GATEWAY_REST_API_NAME__',API_GATEWAY_REST_API_NAME).replace('__PARENT_RESOURCE_ID_VARIABLE__',parent_resource_id_variable)
+                            line_to_append = line.replace('__API_GATEWAY_RESOURCE_NAME__',resource).replace('__API_GATEWAY_REST_API_NAME__',API_GATEWAY_REST_API_NAME).replace('__PARENT_RESOURCE_ID_VARIABLE__',parent_resource_id_variable).replace('__API_GATEWAY_PATH_PART__',path_part)
                             utils.append_new_line(TERRAFORM_TEMPLATE_PATH, line_to_append)
                     
                     # 2. Recurse through Subresources
