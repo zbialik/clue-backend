@@ -24,42 +24,6 @@ def lambda_handler(event, context):
         # TODO: Validate Response
 
         # TODO: Update Character Location
-        
-        
-        # response_dynamo = table.update_item(
-        #     Key={'game_id': str(game_id)},
-        #     UpdateExpression="set #a = :a",
-        #     ExpressionAttributeValues={
-        #         ':a': start_game
-        #     },
-        #     ExpressionAttributeNames={
-        #         "#a": 'active'
-        #     },
-        #     ReturnValues="UPDATED_NEW"
-        # )
-        
-        # response = dynamo_json.loads(response_dynamo)
-        
-        # if response['ResponseMetadata']['HTTPStatusCode'] == 200:
-        #     print('Succesfully activated game.')
-            
-        #     game_dynamo = table.get_item(
-        #         Key={'game_id': str(game_id)}
-        #     )
-            
-        #     response = {
-        #         "statusCode": 200,
-        #         "headers": {
-        #             "Content-Type": "application/json"
-        #         },
-        #         "isBase64Encoded": False,
-        #         "body": dynamo_json.loads(game_dynamo['Item'])
-        #     }
-            
-        #     return response
-        # else:
-        #     print('ERROR: something went wrong while updating "active" attribute for game item (' + str('game_id') + ') in dynamodb.')
-        #     raise
     
     except:
         print("ERROR:", sys.exc_info()[0])
