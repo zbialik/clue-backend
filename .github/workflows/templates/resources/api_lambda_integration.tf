@@ -9,7 +9,7 @@ resource "aws_api_gateway_integration" "__API_GATEWAY_RESOURCE_NAME_____API_GATE
   rest_api_id             = aws_api_gateway_rest_api.__API_GATEWAY_REST_API_NAME__.id
   resource_id             = aws_api_gateway_resource.__API_GATEWAY_RESOURCE_NAME__.id
   http_method             = aws_api_gateway_method.__API_GATEWAY_RESOURCE_NAME_____API_GATEWAY_HTTP_METHOD__.http_method
-  integration_http_method = "__API_GATEWAY_HTTP_METHOD__"
+  integration_http_method = "POST"
   type                    = "AWS_PROXY"
   uri                     = aws_lambda_function.__FUNCTION_NAME__.invoke_arn
 }
