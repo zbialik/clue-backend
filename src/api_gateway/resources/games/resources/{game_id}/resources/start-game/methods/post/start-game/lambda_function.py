@@ -12,14 +12,20 @@ def lambda_handler(event, context):
     db = boto3.resource('dynamodb', region_name='us-east-1')
     table = db.Table('CLUE_GAMES')
     
+    # get path params
+    game_id = event['pathParameters']['game_id']
+
+    # get query params
+    start_game = event["queryStringParameters"]['start_game']
+    
     try:
-        print('up game ' + str(event['game_id']) + ' now.')
+        print('starting game ' + str(game_id) + ' now.')
         
         response_dynamo = table.update_item(
-            Key={'game_id': event['game_id']},
+            Key={'game_id': str(game_id)},
             UpdateExpression="set #a = :a",
             ExpressionAttributeValues={
-                ':a': event['start_game']
+                ':a': start_game
             },
             ExpressionAttributeNames={
                 "#a": 'active'
@@ -33,7 +39,7 @@ def lambda_handler(event, context):
             print('Succesfully activated game.')
             
             game_dynamo = table.get_item(
-                Key={'game_id': event['game_id']}
+                Key={'game_id': str(game_id)}
             )
             
             response = {
@@ -47,7 +53,7 @@ def lambda_handler(event, context):
             
             return response
         else:
-            print('ERROR: something went wrong while updating "active" attribute for game item (' + str(event['game_id']) + ') in dynamodb.')
+            print('ERROR: something went wrong while updating "active" attribute for game item (' + str('game_id') + ') in dynamodb.')
             raise
     
     except:
