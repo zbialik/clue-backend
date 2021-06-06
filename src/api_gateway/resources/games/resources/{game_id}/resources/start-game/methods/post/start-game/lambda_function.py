@@ -41,7 +41,7 @@ def lambda_handler(event, context):
             game_dynamo = table.get_item(
                 Key={'game_id': str(game_id)}
             )
-            game_dict = dynamo_json.loads(game_dynamo)
+            game_dict = dynamo_json.loads(game_dynamo['Item'])
             
             response = {
                 "statusCode": 200,

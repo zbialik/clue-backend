@@ -20,9 +20,9 @@ def lambda_handler(event, context):
         print('retriving game ' + str(game_id) + ' from dynamodb ')
 
         # get game from dynamodb using game_id path param
-        game_item_dynamo = table.get_item(Key={'game_id': game_id})
+        game_dynamo = table.get_item(Key={'game_id': game_id})
         
-        game_item = dynamo_json.loads(game_item_dynamo['Item'])
+        game_dict = dynamo_json.loads(game_dynamo['Item'])
         
         response = {
             "statusCode": 200,
@@ -30,7 +30,7 @@ def lambda_handler(event, context):
                 "Content-Type": "application/json"
             },
             "isBase64Encoded": False,
-            "body": json.dumps(game_item)
+            "body": json.dumps(game_dict)
         }
         
         return response
