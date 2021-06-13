@@ -22,7 +22,13 @@ jobs:
     # Checkout the repository to the GitHub Actions runner
     - name: Checkout
       uses: actions/checkout@v2
-
+    
+    # Prepare Lambda Deployables
+    - name: Prepare Lambda
+      run: |
+        chmod +x ${GITHUB_WORKSPACE}/.github/workflows/build_deployables.py
+        python ${GITHUB_WORKSPACE}/.github/workflows/build_deployables.py
+    
     # Deployment Phase
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v1

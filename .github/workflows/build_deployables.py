@@ -139,7 +139,7 @@ def lamda_worflow():
                     # token replacement for line of template
                     line_to_append = line.replace('__LAYER_NAME__',layer).replace('__LAYER_ZIP_PATH__',zip_path + '.zip')
                     utils.append_new_line(TERRAFORM_TEMPLATE_PATH, line_to_append)
-
+    
     def functions_worfklow():
         function_directories = utils.get_all_sub_directory_names(LAMBDA_FUNCTIONS_DIR)
         for function in function_directories:
@@ -148,7 +148,6 @@ def lamda_worflow():
             function_folder_path = LAMBDA_FUNCTIONS_DIR + '/' + function
             function_zip_path = function_folder_path + '/lambda_function.zip'
             utils.zip_lambda_deployable(function_folder_path + '/' + utils.LAMBDA_FUNCTION_FILENAME, function_zip_path)
-
     
     # Layers Workflow
     layers_worfklow()
