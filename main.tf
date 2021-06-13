@@ -12,14 +12,14 @@ terraform {
   }
   required_version = ">= 0.14.9"
 }
-# data "terraform_remote_state" "clue_backend" {
-#   backend = "s3"
-#   config = {
-#     bucket = "clue-backend"
-#     key    = "terraform/v1/state"
-#     region = "us-east-1"
-#   }
-# }
+data "terraform_remote_state" "clue_backend" {
+  backend = "s3"
+  config = {
+    bucket = "clue-backend"
+    key    = "terraform/v1/state"
+    region = "us-east-1"
+  }
+}
 provider "aws" {
   profile = "default"
   region  = "us-east-1" 
