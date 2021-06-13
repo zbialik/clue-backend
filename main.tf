@@ -12,14 +12,14 @@ terraform {
   }
   required_version = ">= 0.14.9"
 }
-data "terraform_remote_state" "clue_backend" {
-  backend = "s3"
-  config = {
-    bucket = "clue-backend"
-    key    = "terraform/v1/state"
-    region = "us-east-1"
-  }
-}
+# data "terraform_remote_state" "clue_backend" {
+#   backend = "s3"
+#   config = {
+#     bucket = "clue-backend"
+#     key    = "terraform/v1/state"
+#     region = "us-east-1"
+#   }
+# }
 provider "aws" {
   profile = "default"
   region  = "us-east-1" 
@@ -40,7 +40,7 @@ resource "aws_lambda_layer_version" "clue" {
 # Lambda Functions
 resource "aws_lambda_function" "game-controller" {
   filename      = "/home/runner/work/clue-backend/clue-backend/src/lambda/functions/game-controller/lambda_function.zip"
-  function_name = "game-controller"
+  function_name = "game-controller-new"
   role          = "arn:aws:iam::228573559958:role/service-role/ClueLamdaBaseRole"
   handler       = "lambda_function.lambda_handler"
   layers = [
