@@ -1,7 +1,7 @@
 terraform {
   backend "s3" {
     bucket = "clue-backend"
-    key    = "terraform/state"
+    key    = "terraform/v1/state"
     region = "us-east-1"
   }
   required_providers {
