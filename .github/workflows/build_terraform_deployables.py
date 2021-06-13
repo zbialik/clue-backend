@@ -121,8 +121,6 @@ def api_gateway_workflow():
     # append API Gateway - Integration template
     gateway_integration_workflow()
 
-
-
 def lamda_worflow():
     def layers_worfklow():
         layers_directories = utils.get_all_sub_directory_names(LAMBDA_LAYERS_DIR)
