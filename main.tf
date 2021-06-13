@@ -32,7 +32,7 @@ resource "aws_lambda_layer_version" "clue" {
 # Lambda Functions
 resource "aws_lambda_function" "game-controller" {
   filename      = "/home/runner/work/clue-backend/clue-backend/src/lambda/functions/game-controller/lambda_function.zip"
-  function_name = "game-controller-new"
+  function_name = "game-controller"
   role          = "arn:aws:iam::228573559958:role/service-role/ClueLamdaBaseRole"
   handler       = "lambda_function.lambda_handler"
   layers = [
