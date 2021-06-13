@@ -131,14 +131,6 @@ def lamda_worflow():
             target_dir = LAMBDA_LAYERS_DIR + '/' + layer + '/python'
 
             utils.zip_lambda_deployable(target_dir, zip_path)
-
-            # 2. Update Terraform Template for Lambda Layer
-            utils.append_new_line(TERRAFORM_TEMPLATE_PATH, '\n')
-            with open(TEMPLATE_LAMBDA_LAYER, 'r') as reader:
-                for line in reader:
-                    # token replacement for line of template
-                    line_to_append = line.replace('__LAYER_NAME__',layer).replace('__LAYER_ZIP_PATH__',zip_path + '.zip')
-                    utils.append_new_line(TERRAFORM_TEMPLATE_PATH, line_to_append)
     
     def functions_worfklow():
         function_directories = utils.get_all_sub_directory_names(LAMBDA_FUNCTIONS_DIR)
