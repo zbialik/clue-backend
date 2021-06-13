@@ -51,8 +51,8 @@ jobs:
     
       # On push to main, build or change infrastructure according to Terraform configuration files
     - name: Terraform Apply
-      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-      run: terraform apply -auto-approve
+      if: github.ref == 'refs/heads/v1_updates' && github.event_name == 'push'
+      run: terraform destroy -auto-approve
       
     # Cleanup Phase
     - name: Cleanup AWS Credentials
