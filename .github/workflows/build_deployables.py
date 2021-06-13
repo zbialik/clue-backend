@@ -139,6 +139,7 @@ def lamda_worflow():
             print('processing function: ' + function)
             function_folder_path = LAMBDA_FUNCTIONS_DIR + '/' + function
             function_zip_path = function_folder_path + '/lambda_function.zip'
+            print("zipping function to: " + function_zip_path)
             utils.zip_lambda_deployable(function_folder_path + '/' + utils.LAMBDA_FUNCTION_FILENAME, function_zip_path)
     
     # Layers Workflow
