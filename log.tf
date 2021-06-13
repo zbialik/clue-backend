@@ -1,0 +1,633 @@
+2021-06-06T20:29:58.2128269Z terraform {
+2021-06-06T20:29:58.2128585Z 
+2021-06-06T20:29:58.2129015Z   backend "s3" {
+2021-06-06T20:29:58.2129341Z 
+2021-06-06T20:29:58.2129913Z     bucket = "clue-backend"
+2021-06-06T20:29:58.2130303Z 
+2021-06-06T20:29:58.2130780Z     key    = "terraform/state"
+2021-06-06T20:29:58.2131134Z 
+2021-06-06T20:29:58.2131683Z     region = "us-east-1"
+2021-06-06T20:29:58.2132027Z 
+2021-06-06T20:29:58.2132432Z   }
+2021-06-06T20:29:58.2132714Z 
+2021-06-06T20:29:58.2133471Z   required_providers {
+2021-06-06T20:29:58.2133851Z 
+2021-06-06T20:29:58.2134257Z     aws = {
+2021-06-06T20:29:58.2134551Z 
+2021-06-06T20:29:58.2134981Z       source  = "hashicorp/aws"
+2021-06-06T20:29:58.2135343Z 
+2021-06-06T20:29:58.2135800Z       version = "~> 3.27"
+2021-06-06T20:29:58.2136116Z 
+2021-06-06T20:29:58.2136525Z     }
+2021-06-06T20:29:58.2136740Z 
+2021-06-06T20:29:58.2137121Z   }
+2021-06-06T20:29:58.2137377Z 
+2021-06-06T20:29:58.2138046Z   required_version = ">= 0.14.9"
+2021-06-06T20:29:58.2138355Z 
+2021-06-06T20:29:58.2138856Z }
+2021-06-06T20:29:58.2139121Z 
+2021-06-06T20:29:58.2140167Z 
+2021-06-06T20:29:58.2140459Z 
+2021-06-06T20:29:58.2140961Z data "terraform_remote_state" "clue_backend" {
+2021-06-06T20:29:58.2141409Z 
+2021-06-06T20:29:58.2141841Z   backend = "s3"
+2021-06-06T20:29:58.2142162Z 
+2021-06-06T20:29:58.2142533Z   config = {
+2021-06-06T20:29:58.2142823Z 
+2021-06-06T20:29:58.2143552Z     bucket = "clue-backend"
+2021-06-06T20:29:58.2143939Z 
+2021-06-06T20:29:58.2144376Z     key    = "terraform/state"
+2021-06-06T20:29:58.2144743Z 
+2021-06-06T20:29:58.2145341Z     region = "us-east-1"
+2021-06-06T20:29:58.2145677Z 
+2021-06-06T20:29:58.2146049Z   }
+2021-06-06T20:29:58.2146262Z 
+2021-06-06T20:29:58.2146642Z }
+2021-06-06T20:29:58.2146907Z 
+2021-06-06T20:29:58.2147138Z 
+2021-06-06T20:29:58.2258800Z 
+2021-06-06T20:29:58.2259318Z provider "aws" {
+2021-06-06T20:29:58.2259630Z 
+2021-06-06T20:29:58.2260043Z   profile = "default"
+2021-06-06T20:29:58.2260560Z 
+2021-06-06T20:29:58.2261292Z   region  = "us-east-1" 
+2021-06-06T20:29:58.2261623Z 
+2021-06-06T20:29:58.2261924Z }
+2021-06-06T20:29:58.2262155Z 
+2021-06-06T20:29:58.2262378Z 
+2021-06-06T20:29:58.2262600Z 
+2021-06-06T20:29:58.2262822Z 
+2021-06-06T20:29:58.2263063Z 
+2021-06-06T20:29:58.2263558Z resource "aws_lambda_layer_version" "dynamodb_json" {
+2021-06-06T20:29:58.2263982Z 
+2021-06-06T20:29:58.2264962Z   filename   = "/home/runner/work/clue-backend/clue-backend/src/lambda/layers/dynamodb_json/layer.zip"
+2021-06-06T20:29:58.2265598Z 
+2021-06-06T20:29:58.2266018Z   layer_name = "dynamodb_json"
+2021-06-06T20:29:58.2266328Z 
+2021-06-06T20:29:58.2266786Z   compatible_runtimes = ["python3.8"]
+2021-06-06T20:29:58.2267160Z 
+2021-06-06T20:29:58.2267477Z }
+2021-06-06T20:29:58.2267701Z 
+2021-06-06T20:29:58.2267908Z 
+2021-06-06T20:29:58.2268129Z 
+2021-06-06T20:29:58.2268347Z 
+2021-06-06T20:29:58.2268565Z 
+2021-06-06T20:29:58.2269033Z resource "aws_lambda_layer_version" "clue" {
+2021-06-06T20:29:58.2269400Z 
+2021-06-06T20:29:58.2270290Z   filename   = "/home/runner/work/clue-backend/clue-backend/src/lambda/layers/clue/layer.zip"
+2021-06-06T20:29:58.2270892Z 
+2021-06-06T20:29:58.2271264Z   layer_name = "clue"
+2021-06-06T20:29:58.2271548Z 
+2021-06-06T20:29:58.2271987Z   compatible_runtimes = ["python3.8"]
+2021-06-06T20:29:58.2272357Z 
+2021-06-06T20:29:58.2272668Z }
+2021-06-06T20:29:58.2272891Z 
+2021-06-06T20:29:58.2273111Z 
+2021-06-06T20:29:58.2273316Z 
+2021-06-06T20:29:58.2273536Z 
+2021-06-06T20:29:58.2273754Z 
+2021-06-06T20:29:58.2274407Z resource "aws_lambda_function" "create-game" {
+2021-06-06T20:29:58.2274818Z 
+2021-06-06T20:29:58.2275935Z   filename      = "/home/runner/work/clue-backend/clue-backend/src/api_gateway/resources/games/methods/post/create-game/lambda_function.zip"
+2021-06-06T20:29:58.2276734Z 
+2021-06-06T20:29:58.2277299Z   function_name = "create-game"
+2021-06-06T20:29:58.2277646Z 
+2021-06-06T20:29:58.2279198Z   role          = "arn:aws:iam::228573559958:role/service-role/ClueLamdaBaseRole"
+2021-06-06T20:29:58.2279717Z 
+2021-06-06T20:29:58.2280231Z   handler       = "lambda_function.lambda_handler"
+2021-06-06T20:29:58.2280658Z 
+2021-06-06T20:29:58.2281003Z   layers = [
+2021-06-06T20:29:58.2281247Z 
+2021-06-06T20:29:58.2281729Z     aws_lambda_layer_version.clue.arn,
+2021-06-06T20:29:58.2282122Z 
+2021-06-06T20:29:58.2282629Z     aws_lambda_layer_version.dynamodb_json.arn
+2021-06-06T20:29:58.2283043Z 
+2021-06-06T20:29:58.2283342Z   ]
+2021-06-06T20:29:58.2283563Z 
+2021-06-06T20:29:58.2283867Z   
+2021-06-06T20:29:58.2284085Z 
+2021-06-06T20:29:58.2285535Z   source_code_hash = filebase64sha256("/home/runner/work/clue-backend/clue-backend/src/api_gateway/resources/games/methods/post/create-game/lambda_function.zip")
+2021-06-06T20:29:58.2286449Z 
+2021-06-06T20:29:58.2286676Z 
+2021-06-06T20:29:58.2286897Z 
+2021-06-06T20:29:58.2287293Z   runtime = "python3.8"
+2021-06-06T20:29:58.2287592Z 
+2021-06-06T20:29:58.2287814Z 
+2021-06-06T20:29:58.2288035Z 
+2021-06-06T20:29:58.2288413Z   environment {
+2021-06-06T20:29:58.2288707Z 
+2021-06-06T20:29:58.2289056Z     variables = {
+2021-06-06T20:29:58.2289404Z 
+2021-06-06T20:29:58.2289777Z       table = "CLUE_GAMES"
+2021-06-06T20:29:58.2290070Z 
+2021-06-06T20:29:58.2290370Z     }
+2021-06-06T20:29:58.2290598Z 
+2021-06-06T20:29:58.2290916Z   }
+2021-06-06T20:29:58.2291142Z 
+2021-06-06T20:29:58.2291444Z }
+2021-06-06T20:29:58.2291668Z 
+2021-06-06T20:29:58.2291888Z 
+2021-06-06T20:29:58.2292106Z 
+2021-06-06T20:29:58.2292325Z 
+2021-06-06T20:29:58.2292540Z 
+2021-06-06T20:29:58.2293196Z resource "aws_lambda_function" "get-all-games" {
+2021-06-06T20:29:58.2293621Z 
+2021-06-06T20:29:58.2294752Z   filename      = "/home/runner/work/clue-backend/clue-backend/src/api_gateway/resources/games/methods/get/get-all-games/lambda_function.zip"
+2021-06-06T20:29:58.2295549Z 
+2021-06-06T20:29:58.2296114Z   function_name = "get-all-games"
+2021-06-06T20:29:58.2296460Z 
+2021-06-06T20:29:58.2297841Z   role          = "arn:aws:iam::228573559958:role/service-role/ClueLamdaBaseRole"
+2021-06-06T20:29:58.2298359Z 
+2021-06-06T20:29:58.2299063Z   handler       = "lambda_function.lambda_handler"
+2021-06-06T20:29:58.2299521Z 
+2021-06-06T20:29:58.2299880Z   layers = [
+2021-06-06T20:29:58.2300158Z 
+2021-06-06T20:29:58.2300701Z     aws_lambda_layer_version.clue.arn,
+2021-06-06T20:29:58.2301123Z 
+2021-06-06T20:29:58.2301660Z     aws_lambda_layer_version.dynamodb_json.arn
+2021-06-06T20:29:58.2302108Z 
+2021-06-06T20:29:58.2302444Z   ]
+2021-06-06T20:29:58.2302679Z 
+2021-06-06T20:29:58.2302995Z   
+2021-06-06T20:29:58.2303232Z 
+2021-06-06T20:29:58.2304643Z   source_code_hash = filebase64sha256("/home/runner/work/clue-backend/clue-backend/src/api_gateway/resources/games/methods/get/get-all-games/lambda_function.zip")
+2021-06-06T20:29:58.2305624Z 
+2021-06-06T20:29:58.2305859Z 
+2021-06-06T20:29:58.2306089Z 
+2021-06-06T20:29:58.2306522Z   runtime = "python3.8"
+2021-06-06T20:29:58.2306853Z 
+2021-06-06T20:29:58.2307082Z 
+2021-06-06T20:29:58.2307315Z 
+2021-06-06T20:29:58.2307707Z   environment {
+2021-06-06T20:29:58.2308008Z 
+2021-06-06T20:29:58.2308383Z     variables = {
+2021-06-06T20:29:58.2308678Z 
+2021-06-06T20:29:58.2309080Z       table = "CLUE_GAMES"
+2021-06-06T20:29:58.2309388Z 
+2021-06-06T20:29:58.2309719Z     }
+2021-06-06T20:29:58.2309959Z 
+2021-06-06T20:29:58.2310292Z   }
+2021-06-06T20:29:58.2310623Z 
+2021-06-06T20:29:58.2310932Z }
+2021-06-06T20:29:58.2311152Z 
+2021-06-06T20:29:58.2311371Z 
+2021-06-06T20:29:58.2311587Z 
+2021-06-06T20:29:58.2311804Z 
+2021-06-06T20:29:58.2312009Z 
+2021-06-06T20:29:58.2312833Z resource "aws_lambda_function" "get-game" {
+2021-06-06T20:29:58.2313249Z 
+2021-06-06T20:29:58.2314527Z   filename      = "/home/runner/work/clue-backend/clue-backend/src/api_gateway/resources/games/resources/{game_id}/methods/get/get-game/lambda_function.zip"
+2021-06-06T20:29:58.2315425Z 
+2021-06-06T20:29:58.2315989Z   function_name = "get-game"
+2021-06-06T20:29:58.2316344Z 
+2021-06-06T20:29:58.2317368Z   role          = "arn:aws:iam::228573559958:role/service-role/ClueLamdaBaseRole"
+2021-06-06T20:29:58.2317920Z 
+2021-06-06T20:29:58.2318456Z   handler       = "lambda_function.lambda_handler"
+2021-06-06T20:29:58.2318911Z 
+2021-06-06T20:29:58.2319284Z   layers = [
+2021-06-06T20:29:58.2319557Z 
+2021-06-06T20:29:58.2320057Z     aws_lambda_layer_version.clue.arn,
+2021-06-06T20:29:58.2320479Z 
+2021-06-06T20:29:58.2321030Z     aws_lambda_layer_version.dynamodb_json.arn
+2021-06-06T20:29:58.2321480Z 
+2021-06-06T20:29:58.2321819Z   ]
+2021-06-06T20:29:58.2322052Z 
+2021-06-06T20:29:58.2322393Z   
+2021-06-06T20:29:58.2322638Z 
+2021-06-06T20:29:58.2324192Z   source_code_hash = filebase64sha256("/home/runner/work/clue-backend/clue-backend/src/api_gateway/resources/games/resources/{game_id}/methods/get/get-game/lambda_function.zip")
+2021-06-06T20:29:58.2325221Z 
+2021-06-06T20:29:58.2325466Z 
+2021-06-06T20:29:58.2325688Z 
+2021-06-06T20:29:58.2326114Z   runtime = "python3.8"
+2021-06-06T20:29:58.2326447Z 
+2021-06-06T20:29:58.2326690Z 
+2021-06-06T20:29:58.2327035Z 
+2021-06-06T20:29:58.2327399Z   environment {
+2021-06-06T20:29:58.2327692Z 
+2021-06-06T20:29:58.2328056Z     variables = {
+2021-06-06T20:29:58.2328401Z 
+2021-06-06T20:29:58.2328769Z       table = "CLUE_GAMES"
+2021-06-06T20:29:58.2329062Z 
+2021-06-06T20:29:58.2329380Z     }
+2021-06-06T20:29:58.2329608Z 
+2021-06-06T20:29:58.2329912Z   }
+2021-06-06T20:29:58.2330136Z 
+2021-06-06T20:29:58.2330450Z }
+2021-06-06T20:29:58.2330675Z 
+2021-06-06T20:29:58.2330899Z 
+2021-06-06T20:29:58.2331116Z 
+2021-06-06T20:29:58.2331321Z 
+2021-06-06T20:29:58.2331539Z 
+2021-06-06T20:29:58.2332423Z resource "aws_lambda_function" "start-game" {
+2021-06-06T20:29:58.2332860Z 
+2021-06-06T20:29:58.2334544Z   filename      = "/home/runner/work/clue-backend/clue-backend/src/api_gateway/resources/games/resources/{game_id}/resources/start-game/methods/post/start-game/lambda_function.zip"
+2021-06-06T20:29:58.2335496Z 
+2021-06-06T20:29:58.2336047Z   function_name = "start-game"
+2021-06-06T20:29:58.2336387Z 
+2021-06-06T20:29:58.2337344Z   role          = "arn:aws:iam::228573559958:role/service-role/ClueLamdaBaseRole"
+2021-06-06T20:29:58.2338359Z 
+2021-06-06T20:29:58.2339054Z   handler       = "lambda_function.lambda_handler"
+2021-06-06T20:29:58.2339510Z 
+2021-06-06T20:29:58.2339884Z   layers = [
+2021-06-06T20:29:58.2340161Z 
+2021-06-06T20:29:58.2340663Z     aws_lambda_layer_version.clue.arn,
+2021-06-06T20:29:58.2341166Z 
+2021-06-06T20:29:58.2341720Z     aws_lambda_layer_version.dynamodb_json.arn
+2021-06-06T20:29:58.2342177Z 
+2021-06-06T20:29:58.2342517Z   ]
+2021-06-06T20:29:58.2342747Z 
+2021-06-06T20:29:58.2343194Z   
+2021-06-06T20:29:58.2343420Z 
+2021-06-06T20:29:58.2345325Z   source_code_hash = filebase64sha256("/home/runner/work/clue-backend/clue-backend/src/api_gateway/resources/games/resources/{game_id}/resources/start-game/methods/post/start-game/lambda_function.zip")
+2021-06-06T20:29:58.2346535Z 
+2021-06-06T20:29:58.2346778Z 
+2021-06-06T20:29:58.2347002Z 
+2021-06-06T20:29:58.2347426Z   runtime = "python3.8"
+2021-06-06T20:29:58.2347761Z 
+2021-06-06T20:29:58.2348001Z 
+2021-06-06T20:29:58.2348238Z 
+2021-06-06T20:29:58.2348630Z   environment {
+2021-06-06T20:29:58.2348945Z 
+2021-06-06T20:29:58.2349342Z     variables = {
+2021-06-06T20:29:58.2349647Z 
+2021-06-06T20:29:58.2350070Z       table = "CLUE_GAMES"
+2021-06-06T20:29:58.2350388Z 
+2021-06-06T20:29:58.2350732Z     }
+2021-06-06T20:29:58.2350979Z 
+2021-06-06T20:29:58.2351320Z   }
+2021-06-06T20:29:58.2351563Z 
+2021-06-06T20:29:58.2351905Z }
+2021-06-06T20:29:58.2352147Z 
+2021-06-06T20:29:58.2352385Z 
+2021-06-06T20:29:58.2352623Z 
+2021-06-06T20:29:58.2352843Z 
+2021-06-06T20:29:58.2353124Z 
+2021-06-06T20:29:58.2353908Z resource "aws_lambda_function" "move-character" {
+2021-06-06T20:29:58.2354385Z 
+2021-06-06T20:29:58.2355809Z   filename      = "/home/runner/work/clue-backend/clue-backend/src/api_gateway/resources/games/resources/{game_id}/resources/move/methods/post/move-character/lambda_function.zip"
+2021-06-06T20:29:58.2356824Z 
+2021-06-06T20:29:58.2357455Z   function_name = "move-character"
+2021-06-06T20:29:58.2357857Z 
+2021-06-06T20:29:58.2358882Z   role          = "arn:aws:iam::228573559958:role/service-role/ClueLamdaBaseRole"
+2021-06-06T20:29:58.2359443Z 
+2021-06-06T20:29:58.2359985Z   handler       = "lambda_function.lambda_handler"
+2021-06-06T20:29:58.2360436Z 
+2021-06-06T20:29:58.2360807Z   layers = [
+2021-06-06T20:29:58.2361090Z 
+2021-06-06T20:29:58.2361590Z     aws_lambda_layer_version.clue.arn,
+2021-06-06T20:29:58.2362014Z 
+2021-06-06T20:29:58.2362597Z     aws_lambda_layer_version.dynamodb_json.arn
+2021-06-06T20:29:58.2363050Z 
+2021-06-06T20:29:58.2363392Z   ]
+2021-06-06T20:29:58.2363618Z 
+2021-06-06T20:29:58.2363962Z   
+2021-06-06T20:29:58.2364375Z 
+2021-06-06T20:29:58.2366051Z   source_code_hash = filebase64sha256("/home/runner/work/clue-backend/clue-backend/src/api_gateway/resources/games/resources/{game_id}/resources/move/methods/post/move-character/lambda_function.zip")
+2021-06-06T20:29:58.2367102Z 
+2021-06-06T20:29:58.2367330Z 
+2021-06-06T20:29:58.2367536Z 
+2021-06-06T20:29:58.2367934Z   runtime = "python3.8"
+2021-06-06T20:29:58.2368244Z 
+2021-06-06T20:29:58.2368533Z 
+2021-06-06T20:29:58.2368754Z 
+2021-06-06T20:29:58.2369121Z   environment {
+2021-06-06T20:29:58.2369591Z 
+2021-06-06T20:29:58.2369954Z     variables = {
+2021-06-06T20:29:58.2370265Z 
+2021-06-06T20:29:58.2370645Z       table = "CLUE_GAMES"
+2021-06-06T20:29:58.2370993Z 
+2021-06-06T20:29:58.2371313Z     }
+2021-06-06T20:29:58.2371543Z 
+2021-06-06T20:29:58.2371847Z   }
+2021-06-06T20:29:58.2372074Z 
+2021-06-06T20:29:58.2372387Z }
+2021-06-06T20:29:58.2372613Z 
+2021-06-06T20:29:58.2372835Z 
+2021-06-06T20:29:58.2373069Z 
+2021-06-06T20:29:58.2373416Z # API Gateway
+2021-06-06T20:29:58.2373692Z 
+2021-06-06T20:29:58.2374384Z resource "aws_api_gateway_rest_api" "clue-backend" {
+2021-06-06T20:29:58.2374823Z 
+2021-06-06T20:29:58.2375338Z   name = "clue-backend"
+2021-06-06T20:29:58.2375657Z 
+2021-06-06T20:29:58.2375883Z 
+2021-06-06T20:29:58.2376102Z 
+2021-06-06T20:29:58.2376534Z   endpoint_configuration {
+2021-06-06T20:29:58.2376868Z 
+2021-06-06T20:29:58.2377255Z     types = ["REGIONAL"]
+2021-06-06T20:29:58.2377674Z 
+2021-06-06T20:29:58.2377995Z   }
+2021-06-06T20:29:58.2378211Z 
+2021-06-06T20:29:58.2378532Z }
+2021-06-06T20:29:58.2378802Z 
+2021-06-06T20:29:58.2379025Z 
+2021-06-06T20:29:58.2379244Z 
+2021-06-06T20:29:58.2379604Z # API Resources
+2021-06-06T20:29:58.2379890Z 
+2021-06-06T20:29:58.2380368Z resource "aws_api_gateway_resource" "games" {
+2021-06-06T20:29:58.2380762Z 
+2021-06-06T20:29:58.2381129Z   path_part   = "games"
+2021-06-06T20:29:58.2381422Z 
+2021-06-06T20:29:58.2382453Z   parent_id   = aws_api_gateway_rest_api.clue-backend.root_resource_id
+2021-06-06T20:29:58.2383048Z 
+2021-06-06T20:29:58.2383821Z   rest_api_id = aws_api_gateway_rest_api.clue-backend.id
+2021-06-06T20:29:58.2384311Z 
+2021-06-06T20:29:58.2384652Z }
+2021-06-06T20:29:58.2384893Z 
+2021-06-06T20:29:58.2385134Z 
+2021-06-06T20:29:58.2385369Z 
+2021-06-06T20:29:58.2385606Z 
+2021-06-06T20:29:58.2385826Z 
+2021-06-06T20:29:58.2386225Z # API Resources
+2021-06-06T20:29:58.2386534Z 
+2021-06-06T20:29:58.2387053Z resource "aws_api_gateway_resource" "game_id" {
+2021-06-06T20:29:58.2387482Z 
+2021-06-06T20:29:58.2387882Z   path_part   = "{game_id}"
+2021-06-06T20:29:58.2388204Z 
+2021-06-06T20:29:58.2388766Z   parent_id   = aws_api_gateway_resource.games.id
+2021-06-06T20:29:58.2389232Z 
+2021-06-06T20:29:58.2389978Z   rest_api_id = aws_api_gateway_rest_api.clue-backend.id
+2021-06-06T20:29:58.2390475Z 
+2021-06-06T20:29:58.2390817Z }
+2021-06-06T20:29:58.2391058Z 
+2021-06-06T20:29:58.2391290Z 
+2021-06-06T20:29:58.2391527Z 
+2021-06-06T20:29:58.2391761Z 
+2021-06-06T20:29:58.2391982Z 
+2021-06-06T20:29:58.2392372Z # API Resources
+2021-06-06T20:29:58.2392681Z 
+2021-06-06T20:29:58.2393490Z resource "aws_api_gateway_resource" "start-game" {
+2021-06-06T20:29:58.2393916Z 
+2021-06-06T20:29:58.2394438Z   path_part   = "start-game"
+2021-06-06T20:29:58.2394761Z 
+2021-06-06T20:29:58.2395272Z   parent_id   = aws_api_gateway_resource.game_id.id
+2021-06-06T20:29:58.2395687Z 
+2021-06-06T20:29:58.2396373Z   rest_api_id = aws_api_gateway_rest_api.clue-backend.id
+2021-06-06T20:29:58.2396837Z 
+2021-06-06T20:29:58.2397154Z }
+2021-06-06T20:29:58.2397382Z 
+2021-06-06T20:29:58.2397608Z 
+2021-06-06T20:29:58.2397813Z 
+2021-06-06T20:29:58.2398028Z 
+2021-06-06T20:29:58.2398242Z 
+2021-06-06T20:29:58.2398797Z # API Resources
+2021-06-06T20:29:58.2399105Z 
+2021-06-06T20:29:58.2399603Z resource "aws_api_gateway_resource" "move" {
+2021-06-06T20:29:58.2400027Z 
+2021-06-06T20:29:58.2400423Z   path_part   = "move"
+2021-06-06T20:29:58.2400736Z 
+2021-06-06T20:29:58.2401264Z   parent_id   = aws_api_gateway_resource.game_id.id
+2021-06-06T20:29:58.2401733Z 
+2021-06-06T20:29:58.2402639Z   rest_api_id = aws_api_gateway_rest_api.clue-backend.id
+2021-06-06T20:29:58.2403141Z 
+2021-06-06T20:29:58.2403484Z }
+2021-06-06T20:29:58.2403713Z 
+2021-06-06T20:29:58.2403952Z 
+2021-06-06T20:29:58.2404189Z 
+2021-06-06T20:29:58.2404425Z 
+2021-06-06T20:29:58.2404659Z 
+2021-06-06T20:29:58.2405169Z resource "aws_api_gateway_method" "games_POST" {
+2021-06-06T20:29:58.2405595Z 
+2021-06-06T20:29:58.2406374Z   rest_api_id   = aws_api_gateway_rest_api.clue-backend.id
+2021-06-06T20:29:58.2406876Z 
+2021-06-06T20:29:58.2407448Z   resource_id   = aws_api_gateway_resource.games.id
+2021-06-06T20:29:58.2407992Z 
+2021-06-06T20:29:58.2408402Z   http_method   = "POST"
+2021-06-06T20:29:58.2408722Z 
+2021-06-06T20:29:58.2409160Z   authorization = "NONE"
+2021-06-06T20:29:58.2409508Z 
+2021-06-06T20:29:58.2409828Z }
+2021-06-06T20:29:58.2410070Z 
+2021-06-06T20:29:58.2410305Z 
+2021-06-06T20:29:58.2410541Z 
+2021-06-06T20:29:58.2411086Z resource "aws_api_gateway_integration" "games_POST" {
+2021-06-06T20:29:58.2411555Z 
+2021-06-06T20:29:58.2412362Z   rest_api_id             = aws_api_gateway_rest_api.clue-backend.id
+2021-06-06T20:29:58.2412874Z 
+2021-06-06T20:29:58.2413459Z   resource_id             = aws_api_gateway_resource.games.id
+2021-06-06T20:29:58.2413928Z 
+2021-06-06T20:29:58.2414538Z   http_method             = aws_api_gateway_method.games_POST.http_method
+2021-06-06T20:29:58.2415046Z 
+2021-06-06T20:29:58.2415525Z   integration_http_method = "POST"
+2021-06-06T20:29:58.2415906Z 
+2021-06-06T20:29:58.2416307Z   type                    = "AWS_PROXY"
+2021-06-06T20:29:58.2416633Z 
+2021-06-06T20:29:58.2417660Z   uri                     = aws_lambda_function.create-game.invoke_arn
+2021-06-06T20:29:58.2418261Z 
+2021-06-06T20:29:58.2418589Z }
+2021-06-06T20:29:58.2418833Z 
+2021-06-06T20:29:58.2419070Z 
+2021-06-06T20:29:58.2419307Z 
+2021-06-06T20:29:58.2419906Z resource "aws_lambda_permission" "apigw_lambdagames_POST" {
+2021-06-06T20:29:58.2420397Z 
+2021-06-06T20:29:58.2421104Z   statement_id  = "AllowExecutionFromAPIGateway"
+2021-06-06T20:29:58.2421721Z 
+2021-06-06T20:29:58.2422225Z   action        = "lambda:InvokeFunction"
+2021-06-06T20:29:58.2422629Z 
+2021-06-06T20:29:58.2423556Z   function_name = aws_lambda_function.create-game.function_name
+2021-06-06T20:29:58.2424201Z 
+2021-06-06T20:29:58.2424812Z   principal     = "apigateway.amazonaws.com"
+2021-06-06T20:29:58.2425329Z 
+2021-06-06T20:29:58.2426826Z   source_arn = "arn:aws:execute-api:us-east-1:228573559958:${aws_api_gateway_rest_api.clue-backend.id}/*/${aws_api_gateway_method.games_POST.http_method}${aws_api_gateway_resource.games.path}"
+2021-06-06T20:29:58.2427929Z 
+2021-06-06T20:29:58.2428275Z }
+2021-06-06T20:29:58.2428517Z 
+2021-06-06T20:29:58.2428753Z 
+2021-06-06T20:29:58.2428987Z 
+2021-06-06T20:29:58.2429209Z 
+2021-06-06T20:29:58.2429443Z 
+2021-06-06T20:29:58.2429955Z resource "aws_api_gateway_method" "games_GET" {
+2021-06-06T20:29:58.2430380Z 
+2021-06-06T20:29:58.2431151Z   rest_api_id   = aws_api_gateway_rest_api.clue-backend.id
+2021-06-06T20:29:58.2431640Z 
+2021-06-06T20:29:58.2432221Z   resource_id   = aws_api_gateway_resource.games.id
+2021-06-06T20:29:58.2432698Z 
+2021-06-06T20:29:58.2433099Z   http_method   = "GET"
+2021-06-06T20:29:58.2433409Z 
+2021-06-06T20:29:58.2433832Z   authorization = "NONE"
+2021-06-06T20:29:58.2434181Z 
+2021-06-06T20:29:58.2434519Z }
+2021-06-06T20:29:58.2434757Z 
+2021-06-06T20:29:58.2434979Z 
+2021-06-06T20:29:58.2435212Z 
+2021-06-06T20:29:58.2435765Z resource "aws_api_gateway_integration" "games_GET" {
+2021-06-06T20:29:58.2436225Z 
+2021-06-06T20:29:58.2437090Z   rest_api_id             = aws_api_gateway_rest_api.clue-backend.id
+2021-06-06T20:29:58.2437554Z 
+2021-06-06T20:29:58.2438096Z   resource_id             = aws_api_gateway_resource.games.id
+2021-06-06T20:29:58.2438544Z 
+2021-06-06T20:29:58.2439104Z   http_method             = aws_api_gateway_method.games_GET.http_method
+2021-06-06T20:29:58.2439573Z 
+2021-06-06T20:29:58.2440007Z   integration_http_method = "POST"
+2021-06-06T20:29:58.2440360Z 
+2021-06-06T20:29:58.2440747Z   type                    = "AWS_PROXY"
+2021-06-06T20:29:58.2441143Z 
+2021-06-06T20:29:58.2441975Z   uri                     = aws_lambda_function.get-all-games.invoke_arn
+2021-06-06T20:29:58.2442551Z 
+2021-06-06T20:29:58.2442870Z }
+2021-06-06T20:29:58.2443095Z 
+2021-06-06T20:29:58.2443317Z 
+2021-06-06T20:29:58.2443520Z 
+2021-06-06T20:29:58.2444071Z resource "aws_lambda_permission" "apigw_lambdagames_GET" {
+2021-06-06T20:29:58.2444527Z 
+2021-06-06T20:29:58.2445183Z   statement_id  = "AllowExecutionFromAPIGateway"
+2021-06-06T20:29:58.2445744Z 
+2021-06-06T20:29:58.2446261Z   action        = "lambda:InvokeFunction"
+2021-06-06T20:29:58.2446638Z 
+2021-06-06T20:29:58.2447520Z   function_name = aws_lambda_function.get-all-games.function_name
+2021-06-06T20:29:58.2448143Z 
+2021-06-06T20:29:58.2448864Z   principal     = "apigateway.amazonaws.com"
+2021-06-06T20:29:58.2449381Z 
+2021-06-06T20:29:58.2450880Z   source_arn = "arn:aws:execute-api:us-east-1:228573559958:${aws_api_gateway_rest_api.clue-backend.id}/*/${aws_api_gateway_method.games_GET.http_method}${aws_api_gateway_resource.games.path}"
+2021-06-06T20:29:58.2451948Z 
+2021-06-06T20:29:58.2452280Z }
+2021-06-06T20:29:58.2452523Z 
+2021-06-06T20:29:58.2452763Z 
+2021-06-06T20:29:58.2453005Z 
+2021-06-06T20:29:58.2453241Z 
+2021-06-06T20:29:58.2453476Z 
+2021-06-06T20:29:58.2453977Z resource "aws_api_gateway_method" "game_id_GET" {
+2021-06-06T20:29:58.2454406Z 
+2021-06-06T20:29:58.2455175Z   rest_api_id   = aws_api_gateway_rest_api.clue-backend.id
+2021-06-06T20:29:58.2455675Z 
+2021-06-06T20:29:58.2456237Z   resource_id   = aws_api_gateway_resource.game_id.id
+2021-06-06T20:29:58.2456689Z 
+2021-06-06T20:29:58.2457080Z   http_method   = "GET"
+2021-06-06T20:29:58.2457391Z 
+2021-06-06T20:29:58.2457994Z   authorization = "NONE"
+2021-06-06T20:29:58.2458329Z 
+2021-06-06T20:29:58.2458664Z }
+2021-06-06T20:29:58.2458910Z 
+2021-06-06T20:29:58.2459150Z 
+2021-06-06T20:29:58.2459385Z 
+2021-06-06T20:29:58.2459955Z resource "aws_api_gateway_integration" "game_id_GET" {
+2021-06-06T20:29:58.2460413Z 
+2021-06-06T20:29:58.2461254Z   rest_api_id             = aws_api_gateway_rest_api.clue-backend.id
+2021-06-06T20:29:58.2461770Z 
+2021-06-06T20:29:58.2462343Z   resource_id             = aws_api_gateway_resource.game_id.id
+2021-06-06T20:29:58.2462801Z 
+2021-06-06T20:29:58.2463407Z   http_method             = aws_api_gateway_method.game_id_GET.http_method
+2021-06-06T20:29:58.2463917Z 
+2021-06-06T20:29:58.2464397Z   integration_http_method = "POST"
+2021-06-06T20:29:58.2464781Z 
+2021-06-06T20:29:58.2465183Z   type                    = "AWS_PROXY"
+2021-06-06T20:29:58.2465515Z 
+2021-06-06T20:29:58.2466340Z   uri                     = aws_lambda_function.get-game.invoke_arn
+2021-06-06T20:29:58.2466882Z 
+2021-06-06T20:29:58.2467208Z }
+2021-06-06T20:29:58.2467452Z 
+2021-06-06T20:29:58.2467696Z 
+2021-06-06T20:29:58.2467936Z 
+2021-06-06T20:29:58.2468529Z resource "aws_lambda_permission" "apigw_lambdagame_id_GET" {
+2021-06-06T20:29:58.2469013Z 
+2021-06-06T20:29:58.2469722Z   statement_id  = "AllowExecutionFromAPIGateway"
+2021-06-06T20:29:58.2470330Z 
+2021-06-06T20:29:58.2470840Z   action        = "lambda:InvokeFunction"
+2021-06-06T20:29:58.2471247Z 
+2021-06-06T20:29:58.2472094Z   function_name = aws_lambda_function.get-game.function_name
+2021-06-06T20:29:58.2472760Z 
+2021-06-06T20:29:58.2473377Z   principal     = "apigateway.amazonaws.com"
+2021-06-06T20:29:58.2473896Z 
+2021-06-06T20:29:58.2475367Z   source_arn = "arn:aws:execute-api:us-east-1:228573559958:${aws_api_gateway_rest_api.clue-backend.id}/*/${aws_api_gateway_method.game_id_GET.http_method}${aws_api_gateway_resource.game_id.path}"
+2021-06-06T20:29:58.2476444Z 
+2021-06-06T20:29:58.2476809Z }
+2021-06-06T20:29:58.2477049Z 
+2021-06-06T20:29:58.2477289Z 
+2021-06-06T20:29:58.2477525Z 
+2021-06-06T20:29:58.2477747Z 
+2021-06-06T20:29:58.2478005Z 
+2021-06-06T20:29:58.2478747Z resource "aws_api_gateway_method" "start-game_POST" {
+2021-06-06T20:29:58.2479213Z 
+2021-06-06T20:29:58.2479970Z   rest_api_id   = aws_api_gateway_rest_api.clue-backend.id
+2021-06-06T20:29:58.2480478Z 
+2021-06-06T20:29:58.2481376Z   resource_id   = aws_api_gateway_resource.start-game.id
+2021-06-06T20:29:58.2481918Z 
+2021-06-06T20:29:58.2482336Z   http_method   = "POST"
+2021-06-06T20:29:58.2482641Z 
+2021-06-06T20:29:58.2483080Z   authorization = "NONE"
+2021-06-06T20:29:58.2483425Z 
+2021-06-06T20:29:58.2483766Z }
+2021-06-06T20:29:58.2483996Z 
+2021-06-06T20:29:58.2484237Z 
+2021-06-06T20:29:58.2484477Z 
+2021-06-06T20:29:58.2485259Z resource "aws_api_gateway_integration" "start-game_POST" {
+2021-06-06T20:29:58.2485763Z 
+2021-06-06T20:29:58.2486538Z   rest_api_id             = aws_api_gateway_rest_api.clue-backend.id
+2021-06-06T20:29:58.2487129Z 
+2021-06-06T20:29:58.2487954Z   resource_id             = aws_api_gateway_resource.start-game.id
+2021-06-06T20:29:58.2488501Z 
+2021-06-06T20:29:58.2489357Z   http_method             = aws_api_gateway_method.start-game_POST.http_method
+2021-06-06T20:29:58.2489914Z 
+2021-06-06T20:29:58.2490393Z   integration_http_method = "POST"
+2021-06-06T20:29:58.2490777Z 
+2021-06-06T20:29:58.2491200Z   type                    = "AWS_PROXY"
+2021-06-06T20:29:58.2491521Z 
+2021-06-06T20:29:58.2492353Z   uri                     = aws_lambda_function.start-game.invoke_arn
+2021-06-06T20:29:58.2492923Z 
+2021-06-06T20:29:58.2493286Z }
+2021-06-06T20:29:58.2493529Z 
+2021-06-06T20:29:58.2493754Z 
+2021-06-06T20:29:58.2493988Z 
+2021-06-06T20:29:58.2494815Z resource "aws_lambda_permission" "apigw_lambdastart-game_POST" {
+2021-06-06T20:29:58.2495375Z 
+2021-06-06T20:29:58.2496085Z   statement_id  = "AllowExecutionFromAPIGateway"
+2021-06-06T20:29:58.2496689Z 
+2021-06-06T20:29:58.2497190Z   action        = "lambda:InvokeFunction"
+2021-06-06T20:29:58.2497768Z 
+2021-06-06T20:29:58.2498693Z   function_name = aws_lambda_function.start-game.function_name
+2021-06-06T20:29:58.2499323Z 
+2021-06-06T20:29:58.2499927Z   principal     = "apigateway.amazonaws.com"
+2021-06-06T20:29:58.2500447Z 
+2021-06-06T20:29:58.2502083Z   source_arn = "arn:aws:execute-api:us-east-1:228573559958:${aws_api_gateway_rest_api.clue-backend.id}/*/${aws_api_gateway_method.start-game_POST.http_method}${aws_api_gateway_resource.start-game.path}"
+2021-06-06T20:29:58.2503277Z 
+2021-06-06T20:29:58.2503607Z }
+2021-06-06T20:29:58.2503850Z 
+2021-06-06T20:29:58.2504091Z 
+2021-06-06T20:29:58.2504325Z 
+2021-06-06T20:29:58.2504557Z 
+2021-06-06T20:29:58.2504790Z 
+2021-06-06T20:29:58.2505297Z resource "aws_api_gateway_method" "move_POST" {
+2021-06-06T20:29:58.2505721Z 
+2021-06-06T20:29:58.2506488Z   rest_api_id   = aws_api_gateway_rest_api.clue-backend.id
+2021-06-06T20:29:58.2506985Z 
+2021-06-06T20:29:58.2507546Z   resource_id   = aws_api_gateway_resource.move.id
+2021-06-06T20:29:58.2508013Z 
+2021-06-06T20:29:58.2508428Z   http_method   = "POST"
+2021-06-06T20:29:58.2508749Z 
+2021-06-06T20:29:58.2509185Z   authorization = "NONE"
+2021-06-06T20:29:58.2509627Z 
+2021-06-06T20:29:58.2509942Z }
+2021-06-06T20:29:58.2510166Z 
+2021-06-06T20:29:58.2510387Z 
+2021-06-06T20:29:58.2510604Z 
+2021-06-06T20:29:58.2511101Z resource "aws_api_gateway_integration" "move_POST" {
+2021-06-06T20:29:58.2511528Z 
+2021-06-06T20:29:58.2512271Z   rest_api_id             = aws_api_gateway_rest_api.clue-backend.id
+2021-06-06T20:29:58.2512743Z 
+2021-06-06T20:29:58.2513265Z   resource_id             = aws_api_gateway_resource.move.id
+2021-06-06T20:29:58.2513706Z 
+2021-06-06T20:29:58.2514266Z   http_method             = aws_api_gateway_method.move_POST.http_method
+2021-06-06T20:29:58.2514741Z 
+2021-06-06T20:29:58.2515184Z   integration_http_method = "POST"
+2021-06-06T20:29:58.2515522Z 
+2021-06-06T20:29:58.2516090Z   type                    = "AWS_PROXY"
+2021-06-06T20:29:58.2516423Z 
+2021-06-06T20:29:58.2517338Z   uri                     = aws_lambda_function.move-character.invoke_arn
+2021-06-06T20:29:58.2517971Z 
+2021-06-06T20:29:58.2518297Z }
+2021-06-06T20:29:58.2518539Z 
+2021-06-06T20:29:58.2518777Z 
+2021-06-06T20:29:58.2519011Z 
+2021-06-06T20:29:58.2519587Z resource "aws_lambda_permission" "apigw_lambdamove_POST" {
+2021-06-06T20:29:58.2520074Z 
+2021-06-06T20:29:58.2520777Z   statement_id  = "AllowExecutionFromAPIGateway"
+2021-06-06T20:29:58.2521492Z 
+2021-06-06T20:29:58.2521998Z   action        = "lambda:InvokeFunction"
+2021-06-06T20:29:58.2522389Z 
+2021-06-06T20:29:58.2523380Z   function_name = aws_lambda_function.move-character.function_name
+2021-06-06T20:29:58.2524086Z 
+2021-06-06T20:29:58.2524700Z   principal     = "apigateway.amazonaws.com"
+2021-06-06T20:29:58.2525217Z 
+2021-06-06T20:29:58.2526684Z   source_arn = "arn:aws:execute-api:us-east-1:228573559958:${aws_api_gateway_rest_api.clue-backend.id}/*/${aws_api_gateway_method.move_POST.http_method}${aws_api_gateway_resource.move.path}"
+2021-06-06T20:29:58.2527822Z 
+2021-06-06T20:29:58.2528170Z }

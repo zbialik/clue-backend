@@ -8,7 +8,7 @@ from game import Game
 
 def lambda_handler(event, context):
     
-    print('executing start-game lambda function')
+    print('executing update-game lambda function')
     db = boto3.resource('dynamodb', region_name='us-east-1')
     table = db.Table('CLUE_GAMES')
     
