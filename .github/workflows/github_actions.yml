@@ -4,7 +4,7 @@ on:
   push:
     branches:
     - main
-    - python_refactor
+    - method_handling_lambda
   pull_request:
 
 jobs:
@@ -22,11 +22,6 @@ jobs:
     # Checkout the repository to the GitHub Actions runner
     - name: Checkout
       uses: actions/checkout@v2
-    
-    - name: Prepare Lambda
-      run: |
-        chmod +x ${GITHUB_WORKSPACE}/.github/workflows/build_terraform_deployables.py
-        python ${GITHUB_WORKSPACE}/.github/workflows/build_terraform_deployables.py
 
     # Deployment Phase
     - name: Configure AWS Credentials
